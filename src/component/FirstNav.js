@@ -1,12 +1,15 @@
 import React , { useState } from "react";
 import logo from "../images/RAFIK AUDIO VISUEL FINAL 2 .png" 
-import { Col, Row ,Dropdown, Space} from 'antd';
+import { Col, Row ,Dropdown, Space , Menu} from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import navBack from "../images/Background.jpg"
-const { Search } = Input;
+import { Link } from 'react-router-dom';
+
 
 function FirstNav() {
+  const { Search } = Input;
+
     // recuperer le texte depuis le searchBar
     const onSearch = (value) => console.log(value);
     const [open, setOpen] = useState(false);
@@ -24,20 +27,33 @@ function FirstNav() {
     {
       label: 'Appareil Photo',
       key: 'Appareil Photo',
+      id :"1"
     },
     {
       label: 'Objectif',
       key: 'Objectif',
+      id :"2"
     },
     {
       label: 'Eclairage',
       key: 'Eclairage',
+      id :"3"
     },
     {
         label: 'Stockage ',
-        key: 'Stockage4',
+        key: 'Stockage',
+        id :"4"
       },
   ];
+  const menu = (
+    <Menu>
+      {items.map((category) => (
+        <Menu.Item key={category.id}>
+          <Link to={`/Catégories/${category.key}`}>{category.label}</Link>
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
     return(
     <div 
     style={{
@@ -51,16 +67,16 @@ function FirstNav() {
        className="h-auto w-full"  >
        
         
-        <Row className="pb-2 w-full" >        
-        <Col push={4} className=" mt-2" > <img src={logo} alt="Logo"  className="w-20 " /> </Col>
+        <Row className="pb-2 w-full" >           
+        <Col push={4} className=" mt-2" > <Link to={`/`}> <img src={logo} alt="Logo"  className="w-20 " /> </Link> </Col>
         <Col  span={12}  offset={6} className="pt-2" >
         <Search placeholder="Rechercher un article ..." onSearch={onSearch} style={{ width: "60%" }} />
         </Col>
     </Row>
-    <Row   className="space-y-3 space-x-7 text-center   bg-slate-400/20 pb-2" align={"center"} >
-        <Col span={2} className="bg-slate-100 rounded-lg mt-3 text-neutral-600  "> Menu</Col>
-        <Col span={2} className="bg-slate-100  rounded-lg text-neutral-600 h-7" > 
-            <Dropdown
+    <Row   className=" w-full justify-center   bg-slate-400/20 pb-2 pt-5 flex space-x-9 max-[600px]:justify-between max-[600px]:space-x-0 "  >
+        <Col  className="bg-slate-100 rounded-lg  text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold "> Menu</Col>
+        <Col  className="bg-slate-100  rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold" > 
+            {/* <Dropdown
                 menu={{
                     items,
                     onClick: handleMenuClick,
@@ -70,14 +86,19 @@ function FirstNav() {
                 >
                 <a onClick={(e) => e.preventDefault()}>
                     <Space>
-                    Catégories
+                    Categories
                     <DownOutlined />
                     </Space>
                 </a>
-            </Dropdown> 
+            </Dropdown>  */}
+             <Dropdown overlay={menu} trigger={['click']}>
+      <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+        Catégories <DownOutlined />
+      </a>
+    </Dropdown>
         </Col>
-        <Col span={2} className="bg-slate-100  rounded-lg text-neutral-600"> Shop </Col>
-        <Col span={2} className="bg-slate-100   rounded-lg text-neutral-600"> Contact Us  </Col>
+        <Col  className="bg-slate-100  rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold"> Shop </Col>
+        <Col  className="bg-slate-100   rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold"> Contact Us  </Col>
     </Row>
      </div>            
     )

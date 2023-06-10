@@ -1,5 +1,7 @@
 import React from "react";
 import FirstNav from "../component/FirstNav";
+import { Link } from 'react-router-dom';
+
 import backGround from "../images/Background2.jpg"
 import test1 from "../images/test1.jpg"
 import test2 from "../images/test2.jpg"
@@ -54,7 +56,7 @@ function Acceuil () {
   }, [index]);
     return(
       <div>
-        <FirstNav class="h-auto w-auto"  />
+        <FirstNav class="h-auto w-auto "  />
        <div class="block h-full w-full " 
           style=
           {{
@@ -65,10 +67,8 @@ function Acceuil () {
             opacity: "100%" ,
           }} 
         >  
-        <div className="slideshow  " style={{     margin: "0 auto",
-                                                  overflow: "hidden",
-                                                  width: "90%",
-                                                  
+        <div className="slideshow w-11/12 max-[600px]:w-full  " style={{     margin: "0 auto",
+                                                  overflow: "hidden",                                                  
                                             }}
         >
                     <div
@@ -90,7 +90,7 @@ function Acceuil () {
                                 opacity :"90%", 
                                 borderRadius :"10px"
                                   }}>
-                          <p className="decoration-solid w-1/3 text-center font-bold text-2xl italic  text-slate-100 relative top-3/4 left-7"> {items.text} </p>
+                          <p className="decoration-solid w-1/3 text-center font-bold text-2xl italic  text-slate-100 relative top-3/4 left-7 cursor-pointer"> {items.text} </p>
                           
                         </div>
                       ))}
@@ -119,29 +119,40 @@ function Acceuil () {
                             ))}
                         </div>
         </div>
-        <>
+        < >
         <Row className="w-4/5 mt-2 mb-2 ml-auto mr-auto  justify-between text-center"  >
           <Col span={8} className="text-xl font-bold underline-offset-2  text-neutral-950"><p>Produit</p></Col>
           <Col span={8}  className="text-xl font-bold underline-offset-2  text-neutral-950"><p>All</p></Col>
         </Row>
-        <Row className=" justify-between w-4/5 mt-6  ml-auto mr-auto ">
-          <Col className="bg-white w-1/5 h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100">
-            <img  src={apparph} alt="Appareil photo"/>
-            <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4 ">Appareil photo</p>
-           </Col>
-          <Col className="bg-white w-1/5 h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100">
-          <img  src={objec} alt="Objectif"/>
-            <p className="font-extrabold text-slate-400 text-center absolute inset-x-0 bottom-4">Objectif</p>
-          </Col>
-          <Col className="bg-white w-1/5 h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100">
-          <img  src={trep} alt="Ecairage"/>
-            <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4">Ecairage</p>
-          </Col>
-          <Col className="bg-white w-1/5 h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100">
-          <img  src={stock} alt="Stockage"/>
-            <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4 ">Stockage</p> 
-          </Col>
-        </Row>
+              <div className=" pb-6">
+                <Row className=" justify-between w-4/5 mt-6  ml-auto mr-auto  ">
+                  <Col className="bg-white  max-[600px]:bg-inherit  h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2  ">
+                    <Link to={`/Catégories/Appareil photo`}>
+                      
+                      <img  src={apparph} alt="Appareil photo"/>
+                      <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4 ">Appareil photo</p>
+                    </Link>
+                  </Col>
+                  <Col className="bg-white max-[600px]:bg-inherit  h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2  justify-center">
+                    <Link to={`/Catégories/Objectif`}>
+                      <img  src={objec} alt="Objectif"/>
+                      <p className="font-extrabold text-slate-400 text-center absolute inset-x-0 bottom-4 ">Objectif</p>
+                      </Link>
+                  </Col>
+                  <Col className="bg-white  max-[600px]:bg-inherit h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2 ">
+                    <Link to={`/Catégories/Eclairage`}>
+                      <img  src={trep} alt="Ecairage"/>
+                      <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4 ">Ecairage</p>
+                    </Link>
+                  </Col>
+                  <Col className="bg-white max-[600px]:bg-inherit  h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2 ">
+                    <Link to={`/Catégories/Stockage`}>
+                      <img  src={stock} alt="Stockage"/>
+                      <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4  ">Stockage</p> 
+                    </Link>
+                  </Col>
+                </Row>
+              </div>
         </>
         </div>
         <>

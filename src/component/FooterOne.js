@@ -14,32 +14,33 @@ function FooterOne (){
           opacity: "100%" ,
         }}>
         <Row  >
-            <Col className="h-full w-1/3 ">
-                <Row className="w-full flex space-x-5 ml-10 " >
-                    <FaInstagram size={30} className="text-inherit"  />
-                    <p className="font-bold "> RafikAudioVisuel</p>
+            <Col className="h-full w-1/3 pt-4  max-[600px]:mt-2">
+                <Row className="w-full flex space-x-5   ml-5  max-[600px]:ml-0 max-[600px]:flex max-[600px]:space-x-0  " >
+                    <FaInstagram size={20} className="text-inherit "  />
+                    <a href="https://www.instagram.com/rafikaudiovisuel/" className="font-bold max-[600px]:text-xs max-[600px]:ml-0 max-[600px]:mt-0  "> RafikAudioVisuel</a>
                 </Row>
-                <Row className="w-full flex space-x-5 ml-10 ">
-                <FaFacebook  size={30}/>
-                <p className="font-bold "> Rafik Audio Visuel </p>
+                <Row className="w-full flex space-x-5 ml-5 max-[600px]:ml-0 max-[600px]:flex max-[600px]:space-x-0">
+                <FaFacebook  size={20}/>
+                <a className="font-bold max-[600px]:text-xs  max-[600px]:mt-0"> Rafik Audio Visuel </a>
                 </Row>
-                <Row className="w-full flex space-x-7 ml-10 ">
-                <FaPhoneAlt  size={25}/>
-                <p className="font-bold "> 0770 10 82 45 </p>
+                <Row className="w-full flex space-x-7 ml-5 max-[600px]:ml-0 max-[600px]:flex max-[600px]:space-x-0">
+                <FaPhoneAlt  size={20}/>
+                <p className="font-bold max-[600px]:text-xs max-[600px]:mt-0 "> 0770 10 82 45 </p>
                 </Row>    
             </Col>
-            <Col className="h-full w-1/3">
-                {/* <img src={logo} alt="Rafik Audio Visuel" />     */}
-                duh
+            <Col className=" w-1/3 justify-center h-full pt-4 max-[600px]:mt-2">
+               <Row className="justify-center " >  <img src={logo} alt="Rafik Audio Visuel  " className="h-10 w-3/5"  /> </Row>   
+               <Row className=" w-full  justify-center font-bold"> <p> @RAV 2023</p> </Row> 
+               <Row className=" w-full justify-center  font-bold max-[600px]:text-center"> <p>Vente de Matériel Audio Visuel</p> </Row> 
             </Col>
-          <Col className="h-full w-1/3">
-            <Row className="w-full flex space-x-6 ml-10">
-            <FaMapMarkerAlt  size={25}/>
+          <Col className="h-full w-1/3 text-center pt-4 pl-20 max-[600px]:mt-2 max-[600px]:pl-0 ">
+            <Row className="w-full flex space-x-3 max-[600px]:ml-0 max-[600px]:flex max-[600px]:space-x-0  ">
+            <FaMapMarkerAlt  size={20}/>
                 <p className="font-bold "> Alger - Algérie </p>
             </Row>
-            <Row className="w-full flex space-x-6 ml-10">
-            <FaTruck  size={25}/>
-                <p className="font-bold "> Livraison Disponible </p>
+            <Row className="w-full flex space-x-3 max-[600px]:ml-0 max-[600px]:flex max-[600px]:space-x-0  ">
+            <FaTruck  size={20}/>
+                <p className="font-bold max-[600px]:text-xs "> Livraison Disponible </p>
             </Row>
           </Col>
           
