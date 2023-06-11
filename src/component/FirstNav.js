@@ -27,28 +27,24 @@ function FirstNav() {
     {
       label: 'Appareil Photo',
       key: 'Appareil Photo',
-      id :"1"
     },
     {
       label: 'Objectif',
       key: 'Objectif',
-      id :"2"
     },
     {
       label: 'Eclairage',
       key: 'Eclairage',
-      id :"3"
     },
     {
         label: 'Stockage ',
         key: 'Stockage',
-        id :"4"
       },
   ];
   const menu = (
     <Menu>
       {items.map((category) => (
-        <Menu.Item key={category.id}>
+        <Menu.Item key={category.key}>
           <Link to={`/Catégories/${category.key}`}>{category.label}</Link>
         </Menu.Item>
       ))}

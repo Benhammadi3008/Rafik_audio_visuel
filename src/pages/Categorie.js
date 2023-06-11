@@ -6,6 +6,11 @@ import { useParams } from 'react-router-dom';
 import CatCard from "../component/CatCard";
 import appph1 from "../images/appph1.jpg"
 import appph2 from "../images/appph2.jpg"
+import appph3 from "../images/appph3.jpg"
+import appph4 from "../images/appph4.jpg"
+import appph5 from "../images/appph5.jpg"
+import appph6 from "../images/appph6.jpg"
+import ScrollToTopButton from "../component/ScrolToTopButton";
 
 function Categorie(){
     const { categoryKey } = useParams();
@@ -13,19 +18,60 @@ function Categorie(){
         {
             titre :"Trépied et support ", 
             image :appph1 , 
-            description:"Description de la premier sous categorie de la categorie appareil photo ",
+            description:"Description de la premier sous categorie de la categorie Stockage  ",
             categoryKey :"Appareil Photo",
         },
         {
-            titre :"Sacs et étuis de photographie ", 
+            titre :"Photography Bags / cases ", 
             image :appph2 , 
-            description:"Description de la deuxieme sous categorie de la categorie appareil photo ",
-            categoryKey :"Objectif",
-        }
-
+            description:"Description de la deuxieme sous categorie de la categorie Ecairage ",
+            categoryKey :"Appareil Photo",
+        },
         
+        {
+            titre :"Memory Cards  ", 
+            image :appph3 , 
+            description:"Description de la 3eme sous categorie de la categorie appareil photo ",
+            categoryKey :"Appareil Photo",
+        },
+        {
+            titre :"Batteries / power accessories ", 
+            image :appph4 , 
+            description:"Description de la 4 sous categorie de la categorie Objectif ",
+            categoryKey :"Appareil Photo",
+        },
+
+        {
+            titre :"Flashes / Camera lighting  ", 
+            image :appph5 , 
+            description:"Description de la 5eme sous categorie de la categorie Stockage ",
+            categoryKey :"Appareil Photo",
+        },
+        {
+            titre :"Lens filtre  ", 
+            image :appph6 , 
+            description:"Description de la 2 sous categorie de la categorie Ecairage ",
+            categoryKey :"Appareil Photo",
+        },
+        
+        
+        
+        // {
+        //     titre :"Trépied et support ", 
+        //     image :appph1 , 
+        //     description:"Description de la 2 sous categorie de la categorie appareil photo ",
+        //     categoryKey :"Appareil Photo",
+        // },
+        // {
+        //     titre :"Sacs et étuis de photographie ", 
+        //     image :appph2 , 
+        //     description:"Description de la 2 sous categorie de la categorie Objectif ",
+        //     categoryKey :"Objectif",
+        // },        
     ];
-    const sousCatFiltered = sousCat.filter((sousCategorie) => sousCategorie.categoryKey === categoryKey);
+    const sousCatFiltered = sousCat.filter((sousCategorie) =>
+    sousCategorie.categoryKey.toLowerCase() === categoryKey.toLowerCase()
+    );
 
     return(
         <div class="block h-full w-full " 
@@ -39,14 +85,16 @@ function Categorie(){
             }}
          >
             <FirstNav/>
-            <h2> {categoryKey}</h2>
+            <div className="font-bold text-slate-100 justify-center pt-10 pb-5 text-center " > Catégorie : {categoryKey}</div>
+            <div className=" w-4/5 max-[600px]:w-full  pt-5  pb-10  ml-auto max-[600px]:ml-0 mr-auto flex flex-wrap justify-center rounded-lg ">
             {sousCatFiltered.map((sousCategorie) => (
-                <div key={sousCategorie.titre} className="w-1/4 h-10">
-                    <CatCard image={sousCategorie.image} titre={sousCategorie.titre} description={sousCategorie.description}/>
-                </div>
+                    <div className="w-1/5  max-[600px]:w-1/2 pb-5 ml-0 pr-2 pl-2 max-h-72  "> 
+                    <CatCard image={sousCategorie.image} titre={sousCategorie.titre} description={sousCategorie.description} />
+                    </div>
             ))}  
+            </div> 
             <FooterOne/>
-             
+             <ScrollToTopButton/>
         </div>
     )
 }

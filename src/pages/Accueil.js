@@ -13,6 +13,7 @@ import stock from "../images/stock.png"
 
   import { Col, Row } from "antd";
 import FooterOne from "../component/FooterOne";
+import ScrollToTopButton from "../component/ScrolToTopButton";
 
 const items = [
   {
@@ -88,7 +89,11 @@ function Acceuil () {
                                 width: "100%",
                                 display: "inline-block",
                                 opacity :"90%", 
-                                borderRadius :"10px"
+                                borderRadius :"10px",
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
+            
                                   }}>
                           <p className="decoration-solid w-1/3 text-center font-bold text-2xl italic  text-slate-100 relative top-3/4 left-7 cursor-pointer"> {items.text} </p>
                           
@@ -126,9 +131,8 @@ function Acceuil () {
         </Row>
               <div className=" pb-6">
                 <Row className=" justify-between w-4/5 mt-6  ml-auto mr-auto  ">
-                  <Col className="bg-white  max-[600px]:bg-inherit  h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2  ">
-                    <Link to={`/Catégories/Appareil photo`}>
-                      
+                  <Col className="bg-white  max-[600px]:bg-inherit  h-auto rounded-lg cursor-pointer opacity-50  hover:opacity-100 w-1/5  max-[600px]:w-1/2   ">
+                    <Link to={`/Catégories/Appareil Photo`}>                      
                       <img  src={apparph} alt="Appareil photo"/>
                       <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4 ">Appareil photo</p>
                     </Link>
@@ -141,8 +145,8 @@ function Acceuil () {
                   </Col>
                   <Col className="bg-white  max-[600px]:bg-inherit h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2 ">
                     <Link to={`/Catégories/Eclairage`}>
-                      <img  src={trep} alt="Ecairage"/>
-                      <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4 ">Ecairage</p>
+                      <img  src={trep} alt="Eclairage"/>
+                      <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4 ">Eclairage</p>
                     </Link>
                   </Col>
                   <Col className="bg-white max-[600px]:bg-inherit  h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2 ">
@@ -160,6 +164,8 @@ function Acceuil () {
         </Row>
         </>
         <FooterOne/>
+        <ScrollToTopButton/>
+
       </div> 
 
     )
