@@ -1,38 +1,56 @@
-import React from "react";
+import React, { useEffect,useState  } from "react";
 import FirstNav from "../component/FirstNav";
 import { Link } from 'react-router-dom';
 
 import backGround from "../images/Background2.jpg"
-import test1 from "../images/test1.jpg"
-import test2 from "../images/test2.jpg"
-import test3 from "../images/test3.jpg"
-import apparph from "../images/appar.png"
-import objec from "../images/objec.png"
-import trep from "../images/trep.png"
-import stock from "../images/stock.png"
 
-  import { Col, Row } from "antd";
+import axios from 'axios'
+import { Col, Row } from "antd";
 import FooterOne from "../component/FooterOne";
 import ScrollToTopButton from "../component/ScrolToTopButton";
 
-const items = [
-  {
-    image : test1,
-    text: "test1"
-  },
-  {
-    image : test2,
-    text: "test2"
-  },
-  {
-    image : test3,
-    text: "test3"
-  },
-];
+// const items = [
+//   {
+//     image : test1,
+//     text: "test1"
+//   },
+//   {
+//     image : test2,
+//     text: "test2"
+//   },
+//   {
+//     image : test3,
+//     text: "test3"
+//   },
+// ];
 const delay = 5000;
 function Acceuil () {
-    const [index, setIndex] = React.useState(0);
+  
+  const [index, setIndex] = React.useState(0);
   const timeoutRef = React.useRef(null);
+  
+  // API
+  const [categories, setCategories] = useState([]);
+  const [items, setItems] = useState([]);
+  function getEvents() {
+    axios.get(process.env.REACT_APP_API_BASE_URL + `category`)
+      .then(res => {
+        const tmp = res.data;
+        setCategories(tmp.Categories)
+      })
+    axios.get(process.env.REACT_APP_API_BASE_URL +'publicity')
+      .then(res => {
+        const tmp = res.data;
+        console.log(tmp.message);
+        setItems(tmp.message)
+      })
+  }
+  useEffect(() => {
+    getEvents();
+  }, [])
+
+
+  // END API
 
   function resetTimeout() {
     if (timeoutRef.current) {
@@ -57,7 +75,7 @@ function Acceuil () {
   }, [index]);
     return(
       <div>
-        <FirstNav class="h-auto w-auto "  />
+        {/* <FirstNav class="h-auto w-auto "  /> */}
        <div class="block h-full w-full " 
           style=
           {{
@@ -130,31 +148,15 @@ function Acceuil () {
           <Col span={8}  className="text-xl font-bold underline-offset-2  text-neutral-950"><p>All</p></Col>
         </Row>
               <div className=" pb-6">
-                <Row className=" justify-between w-4/5 mt-6  ml-auto mr-auto  ">
-                  <Col className="bg-white  max-[600px]:bg-inherit  h-auto rounded-lg cursor-pointer opacity-50  hover:opacity-100 w-1/5  max-[600px]:w-1/2   ">
-                    <Link to={`/Catégories/Appareil Photo`}>                      
-                      <img  src={apparph} alt="Appareil photo"/>
-                      <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4 ">Appareil photo</p>
+                <Row className=" justify-center w-4/5 mt-6  ml-auto mr-auto flex flex-wrap ">
+                  {categories.map((Categorie) => (
+                  <Col className="bg-white rounded-lg  ml-3 max-[600px]:ml-0 max-[600px]:pl-3 mb-3 max-[600px]:bg-inherit h-full  cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2 ">
+                    <Link to={`/Catégories/` + Categorie.id}>
+                      <img className="rounded-lg" src={Categorie.image} alt={Categorie.name} />
+                      <p className="font-extrabold text-slate-400 text-center absolute inset-x-0 bottom-4 ">{Categorie.name}</p>
                     </Link>
                   </Col>
-                  <Col className="bg-white max-[600px]:bg-inherit  h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2  justify-center">
-                    <Link to={`/Catégories/Objectif`}>
-                      <img  src={objec} alt="Objectif"/>
-                      <p className="font-extrabold text-slate-400 text-center absolute inset-x-0 bottom-4 ">Objectif</p>
-                      </Link>
-                  </Col>
-                  <Col className="bg-white  max-[600px]:bg-inherit h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2 ">
-                    <Link to={`/Catégories/Eclairage`}>
-                      <img  src={trep} alt="Eclairage"/>
-                      <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4 ">Eclairage</p>
-                    </Link>
-                  </Col>
-                  <Col className="bg-white max-[600px]:bg-inherit  h-auto rounded-lg cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2 ">
-                    <Link to={`/Catégories/Stockage`}>
-                      <img  src={stock} alt="Stockage"/>
-                      <p className="font-black text-slate-400 text-center absolute inset-x-0 bottom-4  ">Stockage</p> 
-                    </Link>
-                  </Col>
+                ))}
                 </Row>
               </div>
         </>
