@@ -29,7 +29,7 @@ function FooterOne (){
                 </Row>    
             </Col>
             <Col className=" w-1/3 justify-center h-full pt-4 max-[600px]:mt-2">
-               <Row className="justify-center pb-3" >  <img src={logo} alt="Rafik Audio Visuel  " className="h-10 w-3/5"  /> </Row>   
+               <Row className="justify-center w-2/3 ml-auto mr-auto pb-3" >  <img src={logo} alt="Rafik Audio Visuel  " className="h-10 w-3/5"  /> </Row>   
                <Row className=" w-full  justify-center font-bold pb-2"> <p> @RAV 2023</p> </Row> 
                <Row className=" w-full justify-center  font-bold max-[600px]:text-center pb-3"> <p>Vente de Matériel Audio Visuel</p> </Row> 
             </Col>

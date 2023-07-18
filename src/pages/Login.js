@@ -1,11 +1,41 @@
 import React from "react";
 import {  Row } from "antd";
 import { Button, Checkbox, Form, Input } from 'antd';
+import Logout from '../services/Logout';
 import logo from "../images/RAFIK AUDIO VISUEL FINAL 2 .png"
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 function Login (){
-    const onFinish = (values) => {
-        console.log('Success:', values);
+    const [form] = Form.useForm();
+    const navigate = useNavigate();
+    const onFinish = () => {
+        form
+            .validateFields()
+            .then((values) => {
+                let data = new FormData();
+
+                data.append('login', values.username);
+                data.append('password', values.password);
+                const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+                axios.post(process.env.REACT_APP_API_BASE_URL + 'login',
+                    data , config
+                )
+                    .then(({ data }) => {
+                        localStorage.setItem('authorization', JSON.stringify(data.authorization));
+                        localStorage.setItem('User', JSON.stringify(data.user));
+                        localStorage.setItem('Authenticated', true);
+                        navigate('/dashboard/Main', { replace: true });
+                    })
+                    .catch((error) => {
+                        console.log(error.response.data);
+                    });
+                
+            })
+            .catch((info) => {
+                console.log('Validate Failed:', info);
+            });
       };
       const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -17,6 +47,7 @@ function Login (){
             </Row>
         <Row className="flex justify-center">
             <Form
+                    form={form}
                     name="basic"
                     labelCol={{
                     span: 8,

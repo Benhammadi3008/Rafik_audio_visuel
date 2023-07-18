@@ -9,6 +9,7 @@ import ScrollToTopButton from "../component/ScrolToTopButton";
 import nikon from "../images/Nikon.png"
 import ArtCard from "../component/ArtCard";
 import { Row } from "antd";
+
 import axios from 'axios'
 
 function Article (){
@@ -89,7 +90,7 @@ function Article (){
             backgroundPosition: 'center',
             opacity: "100%" ,
             }}>
-            {/* <FirstNav/> */}
+     {/*-------------------------- Stepper ------------------------------ */}
             <Row className="  text-justify pt-6 pl-16 font-bold  text-blue-900  opacity-80 hover:opacity-100">
                 <p className="underline pr-3">
                     <Link to={`/`}>
@@ -116,23 +117,22 @@ function Article (){
             <p className="font-bold text-slate-100 justify-center pt-10 pb-5 text-center "> Sous-categorie : {Souscategory.name} </p>
             <div className="w-4/5  max-[600px]:w-full justify-center mr-auto ml-auto pt-3 pb-4">
             {  products.map((product) => (
-                
                 <div className="pt-2 pb-3" >
+                    <Link to={`/product/${product.id}`}>
                     <ArtCard 
                         image={GetProductImage(product.products_images_primary)}
-                        // image={nikon}
                         nom={product.name}
                         description={product.description} 
                         prix={product.price} 
                         notation={GetNotation(product.avg_notations)} 
-                        // notation={4} 
                         sousCategori={product.under_category.name} 
                         stock={product.stock}
                         product_id={product.id}
                         brand={product.brand.name}
-                    />
+                        />
+                    
+                        </Link>
                 </div>
-
         ))}   
             </div>
             <FooterOne/>

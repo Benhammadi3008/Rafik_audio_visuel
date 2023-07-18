@@ -1,18 +1,28 @@
 import React , { useEffect,useState  } from "react";
-import { Drawer , theme} from 'antd';
+import { Drawer, theme, Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
-import { Col, Row } from "antd";
 import Acceuil from "./pages/Accueil";
 import SousCategorie from "./pages/SousCategorie";
 import Article from "./pages/Atricle";
+import MainDash from "./pages/Admin/MainDash";
+import Brand from "./pages/Admin/Brand";
+import Category from "./pages/Admin/Category";
+import UnderCategory from "./pages/Admin/UnderCategory";
+import Product_ADM from "./pages/Admin/Product";
+import Publicity from "./pages/Admin/Publicity";
+import Product from "./pages/Product";
+
 import FirstNav from "./component/FirstNav";
-import { BrowserRouter , Route , Routes ,Outlet } from "react-router-dom";
-import Loading from "./component/Loading";
+import { BrowserRouter, Route, Routes, Outlet, Navigate } from "react-router-dom";
 
 import axios from 'axios'
 import Login from "./pages/Login";
+import SideBar from "./component/SideBar";
+
 
 function Layout(getChildData,onClose,openChild,categories){
+
+
   const { token } = theme.useToken();
   const containerStyle = {
     position: 'relative',
@@ -52,6 +62,37 @@ function Layout(getChildData,onClose,openChild,categories){
 </>)
 }
 
+function ProtectedRoutes(){
+  const Authenticated = localStorage.getItem('Authenticated');
+  if(Authenticated !== 'true'){
+    return <Navigate to="/login" />;
+  }
+  return (
+    <div className="flex flex-row max-w-full inline-block">
+      <div className="min-h-screen">
+      <SideBar />
+      </div>
+      <div className=" p-2 main w-full overflow-y-hidden bg-gray-200">
+          <div className="rounded-xl p-2 max-w-full h-full bg-white">
+            <Outlet />
+        </div>
+      </div>
+    </div>
+  )
+}
+function LoginRoute() {
+  const Authenticated = localStorage.getItem('Authenticated');
+
+  if (Authenticated === 'true') {
+    return <Navigate to="/" />;
+  }
+  return (
+    <div>
+      <Outlet />
+    </div>
+  )
+}
+
 function App() {
   const location = window.location;
   
@@ -80,11 +121,24 @@ function App() {
      <BrowserRouter>
     
      <Routes>
-          <Route path ="/login" element={ <Login/>} />
+          <Route element={ProtectedRoutes()}>
+            <Route path="/dashboard/Main" element={<MainDash />} />
+            <Route path="/dashboard/brand" element={<Brand />} />
+            <Route path="/dashboard/category" element={<Category />} />
+            <Route path="/dashboard/undercategory" element={<UnderCategory />} />
+            <Route path="/dashboard/product" element={<Product_ADM />} />
+            <Route path="/dashboard/publicity" element={<Publicity />} />
+          </Route>
+
+          <Route element={LoginRoute()}>
+            <Route path ="/login" element={ <Login/>} />
+          </Route>
+
           <Route element={Layout(getChildData,onClose,openChild,categories)}>
             <Route path="/" element={ <Acceuil/>} />
             <Route path="/Catégories/:categoryKey" element={ <SousCategorie/>} />
             <Route path="/Catégories/:categoryKey/:SouscategoryKey" element={ <Article/>} />
+            <Route path="/Product/:ProductId" element={ <Product/>} />
           </Route>
 
       </Routes>
@@ -92,6 +146,29 @@ function App() {
       
       
      </BrowserRouter>
+     <style>
+      {`
+      ::-webkit-scrollbar {
+        width: 10px;
+    }
+      
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: inherit;
+    }
+      
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 5px;
+    }
+      
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+      `}
+     </style>
     </div>
   );
 }
