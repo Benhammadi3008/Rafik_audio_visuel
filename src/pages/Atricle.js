@@ -13,7 +13,7 @@ import { Row } from "antd";
 import axios from 'axios'
 
 function Article (){
-    
+    const [IsLoading, setIsLoading] = useState(true);
     const { SouscategoryKey } = useParams();
     const { categoryKey } = useParams();
     const [products, setProduct] = useState([]);
@@ -41,6 +41,7 @@ function Article (){
             .then(res => {
                 const tmp = res.data.Products;
                 setProduct(tmp)
+                setIsLoading(false)
             })
         axios.get(process.env.REACT_APP_API_BASE_URL +'undercategory/' + SouscategoryKey)
             .then(res => {
@@ -54,32 +55,19 @@ function Article (){
         getEvents();
     }, [useLocation().pathname])
 
-    const article = [{
-        marque:"Nikon" ,
-        nom :" Powershot G7 Mark III ",
-        sousCategori : "Trépied et support",
-        image : nikon ,
-        id : "1",
-        description: "Caracteristique  de l'article Caracteristique Caracteristique  de l'articleCaracteristique  de l'articleCaracteristique  de l'articleCaracteristique  de l'articleCaracteristique  de l'articleCaracteristique  de l'articleCaracteristique  de l'article   de l'article Caracteristique  de l'article Caracteristique  de l'article Caracteristique  de l'article Caracteristique  de l'article Caracteristique  de l'article ",
-        notation : 5 , 
-        prix : '20 000' ,
-        stock: '10' , 
-        SouscategoryKey : "Trépied et support"
 
-    },
-    {
-        marque : "Canon " ,
-        nom :"Powershot G7 Mark III ",
-        sousCategori : "Trépied et support",
-        image : empty ,
-        id : "1",
-        description: "description de l'article ",
-        notation : 3.5 , 
-        prix : 20000 ,
-        stock: 10 , 
-        SouscategoryKey : "Trépied et support",
-
-    }]
+    if (IsLoading) {
+        return <div style=
+            {{
+                backgroundImage: `url(${backGround})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                opacity: "100%",
+            }} id="preloader">
+            <div id="loader"></div>
+        </div>
+    }
     return(
         <div 
         style=

@@ -12,11 +12,11 @@ import empty from "../images/empty.png"
 import TextArea from "antd/es/input/TextArea";
 
 function Product (){
-
+    
     const onFinish = (values) => {
-  console.log('Success:', values);
-  setOpen(false)
-};
+    console.log('Success:', values);
+    setOpen(false)
+    };  
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
@@ -39,7 +39,7 @@ const onFinishFailed = (errorInfo) => {
     //   };
       
     const [open, setOpen] = useState(false);
-
+    const [IsLoading, setIsLoading] = useState(true);
     const { ProductId } = useParams();
     const [Souscategory, setSouscategory] = useState([]);
     const [category, setcategory] = useState([]);
@@ -49,7 +49,6 @@ const onFinishFailed = (errorInfo) => {
     function getEvents() {
         axios.get(process.env.REACT_APP_API_BASE_URL +'product/' + ProductId)
             .then(res => {
-                // console.log(res.data);
                 const tmp = res.data.undercategory;
                 setSouscategory(tmp)
                 const tmp2 = res.data.category;
@@ -57,8 +56,7 @@ const onFinishFailed = (errorInfo) => {
                 const tmp3 = res.data.message;
                 setProduct(tmp3) 
                 setPrimaryImage(GetProductImage(tmp3.products_images_primary))
-                console.log(GetProductImage(tmp3.products_images_primary)); 
-                // console.log(product);
+                setIsLoading(false)
             })
     }
     useEffect(() => {
@@ -86,10 +84,23 @@ const onFinishFailed = (errorInfo) => {
         setPrimaryImage(key)
         console.log(PrimaryImage);
     }
+
+    if (IsLoading) {
+        return <div style=
+            {{
+                backgroundImage: `url(${backGround})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                opacity: "100%",
+            }} id="preloader">
+            <div id="loader"></div>
+        </div>
+    }
     
     return(
 
-                <div style={{
+        <div style={{
             backgroundImage: `url(${backGround})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',

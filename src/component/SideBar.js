@@ -130,7 +130,7 @@ function SideBar(){
                     ))}
 
 
-                    <Menu.Item {...logoutItem} className='text-red-500 ' style={{
+                    <Menu.Item {...logoutItem} className='text-red-500' style={{
                         position: 'absolute',
                         bottom: 0,
                     }}>

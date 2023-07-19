@@ -9,23 +9,11 @@ import { Col, Row } from "antd";
 import FooterOne from "../component/FooterOne";
 import ScrollToTopButton from "../component/ScrolToTopButton";
 
-// const items = [
-//   {
-//     image : test1,
-//     text: "test1"
-//   },
-//   {
-//     image : test2,
-//     text: "test2"
-//   },
-//   {
-//     image : test3,
-//     text: "test3"
-//   },
-// ];
+
+
 const delay = 5000;
 function Acceuil () {
-  
+  const [IsLoading, setIsLoading] = useState(true);
   const [index, setIndex] = React.useState(0);
   const timeoutRef = React.useRef(null);
   
@@ -43,6 +31,7 @@ function Acceuil () {
         const tmp = res.data;
         console.log(tmp.message);
         setItems(tmp.message)
+        setIsLoading(false)
       })
   }
   useEffect(() => {
@@ -73,6 +62,19 @@ function Acceuil () {
       resetTimeout();
     };
   }, [index]);
+
+  if (IsLoading) {
+    return <div style=
+      {{
+        backgroundImage: `url(${backGround})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        opacity: "100%",
+      }} id="preloader">
+      <div id="loader"></div>
+    </div>
+  }
     return(
       <div>
         {/* <FirstNav class="h-auto w-auto "  /> */}
