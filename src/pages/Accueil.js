@@ -8,6 +8,7 @@ import axios from 'axios'
 import { Col, Row } from "antd";
 import FooterOne from "../component/FooterOne";
 import ScrollToTopButton from "../component/ScrolToTopButton";
+import Product from "./Product";
 
 
 
@@ -99,12 +100,13 @@ function Acceuil () {
                                 transition: "ease 1000ms", 
                               }}
                     >
-                      {items.map((items, index) => 
+                      {items.map((item, index) => 
                       (
+                        <Link to={`/Product/` + item.product_id}>
                         <div
                           className="slide "
                           key={index}
-                          style={{ backgroundImage : `url(${items.image})` ,
+                          style={{ backgroundImage : `url(${item.image})` ,
                                 height: "400px",
                                 width: "100%",
                                 display: "inline-block",
@@ -115,12 +117,13 @@ function Acceuil () {
                                 backgroundPosition: 'center',
             
                                   }}>
-                          <p className="decoration-solid w-1/3 text-center font-bold text-2xl italic  text-slate-100 relative top-3/4 left-7 cursor-pointer"> {items.text} </p>
+                          <p className="decoration-solid w-1/3 text-center font-bold text-2xl italic  text-slate-100 relative top-3/4 left-7 cursor-pointer"> {item.text} </p>
+                      
                           
                         </div>
+                        </Link>
                       ))}
                     </div>
-
                       <div className="slideshowDots " 
                           style={{textAlign: "center"}}>
                             {items.map((_, idx) => 
@@ -154,7 +157,7 @@ function Acceuil () {
                   {categories.map((Categorie) => (
                   <Col className="bg-white rounded-lg  ml-3 max-[600px]:ml-0 max-[600px]:pl-3 mb-3 max-[600px]:bg-inherit h-full  cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2 ">
                     <Link to={`/Catégories/` + Categorie.id}>
-                      <img className="rounded-lg" src={Categorie.image} alt={Categorie.name} />
+                      <img className="rounded-lg h-full" src={Categorie.image} alt={Categorie.name} />
                       <p className="font-extrabold text-slate-400 text-center absolute inset-x-0 bottom-4 ">{Categorie.name}</p>
                     </Link>
                   </Col>

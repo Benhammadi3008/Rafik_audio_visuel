@@ -1,7 +1,7 @@
 import React, {  useState , useEffect } from "react";
 
 import { Link, useParams , useLocation } from "react-router-dom";
-import { Row  , Col , Rate ,Button, Modal ,  Form, Input , InputNumber } from "antd";
+import { Row, Col, Rate, Button, Modal, Form, Input, InputNumber, notification } from "antd";
 import backGround from"../images/Background2.jpg"
 
 import axios from 'axios'
@@ -12,31 +12,63 @@ import empty from "../images/empty.png"
 import TextArea from "antd/es/input/TextArea";
 
 function Product (){
-    
     const onFinish = (values) => {
-    console.log('Success:', values);
+        form
+    .validateFields()
+    .then((values) => {
+
+        let data = new FormData();
+        
+        data.append('lastname', values.Nom);
+        data.append('email', values.mail);
+        data.append('address', values.adress);
+        data.append('phone_number', values.number);
+        data.append('firstname', values.Prenom);
+        data.append('quantity', values.quantite);
+        data.append('comment', values.Commentaire);
+        data.append('product_id', ProductId );
+        
+
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+        axios.post(process.env.REACT_APP_API_BASE_URL + 'order',
+            data
+            , config
+        )
+            .then(({  }) => {
+                setOpen(false);
+                form.resetFields();
+                api['success']({
+                    message: 'Commande',
+                    description:
+                        'Commande ajoutee avec succès.',
+                });
+            })
+            .catch(() => {
+                api['error']({
+                    message: "Commande",
+                    description: "Erreur d'ajout de la commande",
+                });
+            });
+    })
+    .catch((info) => {
+        console.log(info);
+        info.errorFields.forEach(element => {
+            api['error']({
+                message: "Erreur de saisie",
+                description: element.errors[0],
+            });
+        });
+    });
     setOpen(false)
-    };  
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
+      };
+      const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+    const [form] = Form.useForm();
 
-    // const [nom, setNom] = useState('');
-    // const [prenom, setPrenom] = useState('');
+    const [api, contextHolder] = notification.useNotification();
 
-    // const handleInputChange = (event) => {
-    //     setNom(event.target.value);
-    //     setPrenom(event.target.value);
-    //     // console.log('Nom Prénom:', nomPrenom);
-
-    //   };
-    
-    //   const handleConfirmerClick = () => {
-    //     console.log('Nom :', nom );
-    //     console.log( 'prenom:',  prenom);
-
-    //     setOpen(false)
-    //   };
       
     const [open, setOpen] = useState(false);
     const [IsLoading, setIsLoading] = useState(true);
@@ -63,7 +95,7 @@ const onFinishFailed = (errorInfo) => {
         getEvents();
     }, [useLocation().pathname])
     function GetNotation(val){
-        return 3 ; 
+        // return 3 ; 
         if (val.length === 0){
             return 0
         }else{
@@ -109,6 +141,7 @@ const onFinishFailed = (errorInfo) => {
 
             }}
             className="justify-center">
+                {contextHolder}
                 {/* -------------------------- STEPPER --------------------------------- */}
          <Row className="  text-justify pt-6 pl-16 font-bold  text-blue-900  opacity-80 hover:opacity-100">
                 <p className="underline pr-3">
@@ -154,7 +187,7 @@ const onFinishFailed = (errorInfo) => {
                     <Row className="w-full h-4/5 justify-around " >
                     <div className="w-1/5 h-4/5 overflow-y-scroll overflow-x-hidden mb-3  " >
                         {product.products_images.map((image) => (
-                            <img src={image.image} alt=" " onClick={() => OnClickPrimaryImage(image.image)} className="h-2/6  mb-2  rounded-md cursor-pointer   " />
+                            <img src={image.image} alt=" " onClick={() => OnClickPrimaryImage(image.image)} className="h-2/6  mb-2  rounded-md cursor-pointer  max-[600px]:max-h-32 max-[600px]:w-52 " />
                         ))}
                         </div>
                         <img src={PrimaryImage} alt={product.name}  className="h-4/5 w-4/5 pl-2 rounded-lg" />
@@ -163,9 +196,25 @@ const onFinishFailed = (errorInfo) => {
                 </Col>
                
                 <Col className="w-2/5  flex flex-col max-[600px]:w-4/5 ml-auto mr-auto max-[600px]:mb-5" >
-                    <Row className=" font-black text-2xl  w-full flex justify-center "> <p className="bg-slate-200 rounded-lg h-14 w-3/6  pt-2 text-cyan-800  max-[600px]:w-1/2">{product.price} DA </p> </Row>
+                    <Row className=" font-black   w-full flex justify-center ">
+                            
+                            {(product.is_reduced === '1' ) ? (
+                            <div className="block ml-auto mr-auto ">
+                            <p className=" text-xl font-normal rounded-lg h-7 mx-10  mt-1 text-gray-600 line-through	 ">
+                            {product.price} DA  
+                            </p>
+                            <p className=" text-2xl rounded-lg h-3  mb-2  text-gray-700  ">
+                            {product.reduced_price} DA 
+                            </p>
+                            </div>
+                             ) : (
+                            <p className=" text-2xl rounded-lg  h-10  w-1/3   text-blue-700  border border-red-500   max-[600px]:w-1/2">
+                            {product.price} DA 
+                            </p>                     
+                           )}
+                    </Row>
                     <Row className="block mt-5 h-2/4">
-                        <p className="font-black text-2xl"> Caractéristiques : </p> 
+                        <p className="font-black text-2xl text-gray-700"> Caractéristiques : </p> 
                         <p className="font-bold overflow-y-scroll "> {product.description} </p>
                     </Row>
                     <Row className="  ">
@@ -192,7 +241,7 @@ const onFinishFailed = (errorInfo) => {
         
                     >
                          <Form
-                           
+                            form={form}
                             autoComplete="off"
                             style={{ 
                                
@@ -324,7 +373,7 @@ const onFinishFailed = (errorInfo) => {
                 {product.features.map((features) => (        
                 <div className="flex flex-row ">
                     <p className="font-black text-xl ml-4"> {features.type} :  </p>
-                    <p className="ml-5  font-black text-l " > {features.text} </p>
+                    <p className="ml-5  font-black text-l mt-1 " > {features.text} </p>
                     </div>
                     ))}
             </Row>

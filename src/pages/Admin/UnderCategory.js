@@ -235,6 +235,11 @@ function UnderCategory() {
                         fileList={fileList}
                         onPreview={handlePreview}
                         onChange={handleChange}
+                        beforeUpload={file => {
+                            getBase64(file)
+                            // Prevent upload
+                            return false;
+                        }}
 
                     >
                         {fileList.length >= 1 ? null : uploadButton}

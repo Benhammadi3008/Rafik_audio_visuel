@@ -89,9 +89,9 @@ function BrandTab() {
             render: (_, record) =>
                 dataSource.length >= 1 ? (
                     <div className="flex flex-row justify-around">
-                        <Button onClick={() => handleModify(record.key)} className="bg-green-500 hover:bg-green-400 text-white hover:text-white hover:border-red-400" style={{ borderColor: "#4ade80", color: 'white' }} shape="round" icon={<EditOutlined />} size={4} />
+                        <Button onClick={() => handleModify(record.key)} className="bg-green-500 hover:bg-green-400 text-white hover:text-white hover:border-red-400" style={{ borderColor: "#4ade80", color: 'white' }} shape="circle" icon={<EditOutlined />} size={4} />
                         <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-                            <Button type="primary" shape="round" icon={< DeleteOutlined />} size={4} danger />
+                            <Button type="primary" shape="circle" icon={< DeleteOutlined />} size={4} danger />
                         </Popconfirm>
                     </div>
                 ) : null,

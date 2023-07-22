@@ -1,11 +1,11 @@
-import { Button, Modal, Form, Input, Card, Avatar, Select, Upload, InputNumber, Checkbox, Space, notification, Popconfirm , Row , Col } from 'antd';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { useState, useEffect } from 'react';
-import ProductTab from '../../component/Admin/ProductTab'
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, Form, Input, Upload, Popconfirm, Table, notification, Select, Checkbox, InputNumber, Space ,Row,Col,Card} from 'antd';
+import { DeleteOutlined, EditOutlined, PlusOutlined, FileImageOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import authHeader from '../../services/authHeader'
+
 import axios from 'axios'
-function Product() {
-    const { Meta } = Card;
-    const [api, contextHolder] = notification.useNotification();
+
+function ProductTab() {
     const { TextArea } = Input;
     const { Option } = Select;
     const layout = {
@@ -16,19 +16,34 @@ function Product() {
             span: 14,
         },
     };
-    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-    // Upload 
-    const getBase64 = (file) =>{
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            
-        };
-    const [ProductImages, setProductImages] = useState([]);
+    const [ChangedImage, setChangedImage] = useState(false);
+    const [ChangedFeature, setChangedFeature] = useState(false);
+    const [dataSource, setDataSource] = useState([]);
+    const data = [];
+    const [openSetImage, setopenSetImage] = useState(false);
+    const [products, setProducts] = useState([]);
     const [undercategories, setUnderCategories] = useState([]);
     const [brands, setBrands] = useState([]);
     const [ReduceDisabled, setReduceDisabled] = useState(false);
-
     function getEvents() {
+        axios.get(process.env.REACT_APP_API_BASE_URL + `product`)
+            .then(res => {
+                const tmp = res.data.Products;
+                tmp.forEach((product) => {
+                    data.push({
+                        key: product.id,
+                        text: product.name,
+                        under_category: product.under_category.name,
+                        brand: product.brand.name,
+                        serial_number: product.serial_number,
+                        stock:product.stock,
+                        price:(product.price + "  DA")
+                    })
+                })
+                setDataSource(data)
+
+            })
+
         axios.get(process.env.REACT_APP_API_BASE_URL + 'undercategory')
             .then(res => {
                 const tmp_2 = res.data;
@@ -43,34 +58,198 @@ function Product() {
     useEffect(() => {
         getEvents();
     }, [])
+
+
+    const handleDelete = (key) => {
+
+        axios
+            .delete(process.env.REACT_APP_API_BASE_URL + 'product/' + key,
+                authHeader())
+            .then(({ }) => {
+                const newData = dataSource.filter((item) => item.key !== key);
+                setDataSource(newData);
+                api['success']({
+                    message: 'Produit',
+                    description:
+                        'Produit a été supprimée avec succès.',
+                });
+            })
+            .catch(() => {
+
+            });
+
+
+    };
+    const [ProductId, setProductId] = useState('');
+    const [ProductImages, setProductImages] = useState([]);
+    const handlePrimaryImage= (key) => {
+
+        axios.get(process.env.REACT_APP_API_BASE_URL + 'product/' + key,
+            authHeader()
+        )
+            .then(({ data }) => {
+                const tmp_data = []
+                data.message.products_images.forEach((product_image) => {
+                    tmp_data.push({
+                        uid: product_image.id,
+                        name: 'image.png',
+                        status: 'done',
+                        url: product_image.image
+                    }
+                    )
+                })
+                setProductImages(tmp_data)
+                setopenSetImage(true);
+            })
+            .catch((error) => {
+                console.log(error.response.data);
+            });
+    }
+
+    const handleModify = (key) => {
+        setProductId(key);
+        axios.get(process.env.REACT_APP_API_BASE_URL + 'product/' + key,
+            authHeader()
+        )
+            .then(({ data }) => {
+                setOpen(true);
+                form.setFieldValue('name', data.message.name)
+                form.setFieldValue('under_category_id', data.message.under_category_id)
+                form.setFieldValue('brand_id', data.message.brand_id)
+                form.setFieldValue('serial_number', data.message.serial_number)
+                form.setFieldValue('price', data.message.price)
+                form.setFieldValue('description', data.message.description)
+
+                form.setFieldValue('stock', data.message.stock)
+                form.setFieldValue('reduced_price', data.message.reduced_price)
+                setReduceDisabled((data.message.is_reduced === '1'))
+
+                const tmp_data = []
+                data.message.products_images.forEach((product_image) => {
+                    tmp_data.push({
+                        uid: product_image.id,
+                        name: 'image.png',
+                        status: 'done',
+                        url: product_image.image}
+                        )
+                    })
+                setFileList(tmp_data)
+                const tmp_feature = []
+                data.message.features.forEach((feature) => {
+                    tmp_feature.push({
+                        type: feature.type,
+                        text: feature.text,
+                    }
+                    )
+                })
+                form.setFieldValue('features', tmp_feature )
+                })
+                
+                
+            .catch((error) => {
+                console.log(error.response.data);
+            });
+
+    };
+
+    const columns = [
+        {
+            title: 'Produit',
+            dataIndex: 'text',
+        },
+        {
+            title: 'Sous categorie',
+            dataIndex: 'under_category',
+        },
+        {
+            title: 'Marque',
+            dataIndex: 'brand',
+        },
+        {
+            title: 'Numero de serie',
+            dataIndex: 'serial_number',
+        },
+        {
+            title: 'Stock',
+            dataIndex: 'stock',
+        },
+        {
+            title: 'Prix',
+            dataIndex: 'price',
+        },
+        {
+            title: 'Action',
+            dataIndex: '',
+            key: 'x',
+            width: 150,
+            render: (_, record) =>
+                dataSource.length >= 1 ? (
+                    <div className="flex flex-row justify-around">
+                        <Button onClick={() => handlePrimaryImage(record.key)} className="bg-blue-400 hover:bg-blue-300 text-white hover:text-white hover:border-blue-400" style={{ borderColor: "#60a5fa", color: 'white' }} shape="circle" icon={< FileImageOutlined />} size={2} />
+                        <Button onClick={() => handleModify(record.key)} className="bg-green-500 hover:bg-green-400 text-white hover:text-white hover:border-red-400" style={{ borderColor: "#4ade80", color: 'white' }} shape="circle" icon={<EditOutlined />} size={2} />
+                        <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+                            <Button type="primary" shape="circle" icon={< DeleteOutlined />} size={2} danger />
+                        </Popconfirm>
+                    </div>
+                ) : null,
+        },
+    ];
+
+    // Upload 
+    const getBase64 = (file) =>
+        new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
     // Upload Image
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
-    // const [SelectedImage, setSelectedImage] = useState('');
-    // const [PrimaryImage, setPrimaryImage] = useState('');
+    const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState([]);
     // End Upload 
 
     const [open, setOpen] = useState(false);
-    const [openSetImage, setopenSetImage] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
+    const [api, contextHolder] = notification.useNotification();
+    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+    const handleCancel_ProductImageModal = () => {
+        setopenSetImage(false)
+    };
+    const handleConfirm_ProductImageModal = (key) => {
+        let image_data = new FormData();
+        image_data.append('is_primary', '1');
+        image_data.append("_method", "PATCH");
+
+        axios.post(process.env.REACT_APP_API_BASE_URL + 'productimage/' + key,
+            image_data
+            , config
+        )
+            .then(({ data }) => {
+                setopenSetImage(false)
+            })
+            .catch((error) => {
+                console.log(error.response.data);
+            });
+
+    };
+    const handleCancel_ProductModal = () => {
+        setOpen(false);
+        setChangedFeature(false)
+        setChangedImage(false)
+    };
 
     const [form] = Form.useForm();
-    const showProductModal = () => {
-        setOpen(true);
-    };
+
     const handleOk_ProductModal = () => {
-        // setModalText('The modal will be closed after two seconds');
         setConfirmLoading(true);
+
+      
         form
             .validateFields()
             .then((values) => {
-                console.log(values);
                 let data = new FormData();
-
-                for (var x = 0; x < fileList.length; x++) {
-                    data.append("images[]", fileList[x].originFileObj);
-                }
 
                 data.append('name', values.name);
                 data.append('brand_id', values.brand_id);
@@ -82,96 +261,94 @@ function Product() {
                 if (ReduceDisabled) {
                     data.append('is_reduced', "1");
                     data.append('reduced_price', values.reduced_price);
+                }else{
+                    data.append('is_reduced', "0");
+                    data.append('reduced_price', "");
                 }
 
-                
+                data.append("_method", "PATCH");
 
-                axios.post(process.env.REACT_APP_API_BASE_URL + 'product',
+                axios.post(process.env.REACT_APP_API_BASE_URL + 'product/' + ProductId,
                     data
                     , config
                 )
-                    .then(({ data }) => {
-                        values.features.forEach(feature => {
-                            let feature_data = new FormData();
-                            feature_data.append('product_id', data.product_id);
-                            feature_data.append('type', feature.type);
-                            feature_data.append('text', feature.text);
-
-                            axios.post(process.env.REACT_APP_API_BASE_URL + 'feature',
-                                feature_data
-                                , config
-                            )
-                                .then(({ data }) => {
-                                    console.log(data);
-                                    form.resetFields();
-                                })
-                                .catch((error) => {
-                                    console.log(error.response.data);
-                                });
-                        });
-                        const tmp_img = data.images;
-                        setProductImages(tmp_img);
+                    .then(({ }) => {
                         setOpen(false);
                         setConfirmLoading(false);
-                        setopenSetImage(true)
-                        
-                    })
+                        form.resetFields();
+                     })
                     .catch((error) => {
                         console.log(error.response.data);
                     });
-                setConfirmLoading(false);
             })
             .catch((info) => {
                 console.log('Validate Failed:', info);
             });
+        console.log(fileList);
+        if(ChangedImage){
+            let images_data = new FormData();
+            
+            console.log(fileList);
+            for (var x = 0; x < fileList.length; x++) {
+                images_data.append("images[]", fileList[x].originFileObj);
+                if (typeof fileList[x].url !== "undefined") {
+                    images_data.append("imagesUrls[]", fileList[x].url);
+                }
+            }
+
+            axios.post(process.env.REACT_APP_API_BASE_URL + 'productimages/' + ProductId,
+                images_data
+                , config
+            )
+                .then(({ data }) => {
+                    console.log(data);
+                })
+                .catch((error) => {
+                    console.log(error.response.data);
+                });
+        }
+        if(ChangedFeature){
+            let features_data = new FormData();
+            console.log(form.getFieldValue('features')); 
+            features_data.append('features[]', form.getFieldValue('features'));
+            
+            axios.post(process.env.REACT_APP_API_BASE_URL + 'features/' + ProductId,
+                {features : form.getFieldValue('features')}
+                , config
+            )
+                .then(({data }) => {
+                    console.log(data);
+                })
+                .catch((error) => {
+                    console.log(error.response.data);
+                });
+        }
+        
+        api['success']({
+            message: 'Produit',
+            description:
+                'Produit a été modifié avec succès.',
+        });
         setConfirmLoading(false);
-        setOpen(false);
-    };
-
-
-    const handleCancel_ProductModal = () => {
-        setOpen(false);
-    };
-    const handleCancel_ProductImageModal = () => {
-        setopenSetImage(false)
+        // setChangedFeature(false)
+        // setChangedImage(false)
     };
     const onFinish_ProductModal = () => {
     };
-
-    const handleConfirm_ProductImageModal = (key) => {
-        let image_data = new FormData();
-        image_data.append('is_primary', '1');
-        image_data.append("_method", "PATCH");
-
-        axios.post(process.env.REACT_APP_API_BASE_URL + 'productimage/' +key,
-            image_data
-            , config
-        )
-            .then(({ data }) => {
-                setopenSetImage(false)
-            })
-            .catch((error) => {
-                console.log(error.response.data);
-            });
-        
-    };
-
-
-
     const handleCancelUpload = () => setPreviewOpen(false);
-    
-
     const handlePreview = async (file) => {
-        console.log(file);
         if (!file.url && !file.preview) {
-            file.preview = getBase64(file.originFileObj);
+            file.preview = await getBase64(file.originFileObj);
         }
-        
-        setPreviewImage(file.url || file.thumbUrl);
-        // setSelectedImage(file.uid);
+        setPreviewImage(file.url || file.preview);
         setPreviewOpen(true);
+        setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
     };
-    const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+    const handleChange = ({ fileList: newFileList }) => {
+        setFileList(newFileList)
+        setChangedImage(true)
+    };
+
     const uploadButton = (
         <div>
             <PlusOutlined />
@@ -185,29 +362,21 @@ function Product() {
         </div>
     );
 
-    // SetPrimary 
-    /* 
-    const SetPrimaryImage = () => {
-        setPrimaryImage(SelectedImage)
-    };
-    */
 
     return (
-        <>
+        <div className="w-full h-full inline-block">
             {contextHolder}
-            <div class="h-full w-full flex flex-col my-4 " >
+            <Table
+                columns={columns}
+                dataSource={dataSource}
+                className="inline-block"
+                scroll={{
+                    y: 320,
+                }}
 
-                <div className="flex justify-end">
-                    <Button type="primary" className='bg-blue-300 text-base mr-4 ' onClick={showProductModal}>
-                        Ajouter un produit
-                    </Button>
-                </div>
-                <div className="my-4 inline-block">
-                    <ProductTab />                
-                </div>
-            </div >
+            />
             <Modal
-                title="Ajouter un produit"
+                title="Modifier un produit"
                 open={open}
                 onOk={handleOk_ProductModal}
                 confirmLoading={confirmLoading}
@@ -335,7 +504,7 @@ function Product() {
                         rules={[
                             {
                                 required: false,
-                                
+
                             },
                         ]}
                     >
@@ -383,20 +552,20 @@ function Product() {
                                         >
                                             <Input style={{ width: "250%", marginLeft: -60 }} placeholder="Text" />
                                         </Form.Item>
-                                        <MinusCircleOutlined onClick={() => remove(name)} />
+                                        <MinusCircleOutlined onClick={() => { remove(name); setChangedFeature(true) }} />
                                     </Space>
                                 ))}
                                 <Form.Item style={{ width: "100%", marginLeft: 130 }} >
-                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                    <Button type="dashed" onClick={() => { add(); setChangedFeature(true)}} block icon={<PlusOutlined />}>
                                         Add field
                                     </Button>
                                 </Form.Item>
                             </>
                         )}
                     </Form.List>
-
-                    <Upload
                     
+                    <Upload
+
                         multiple={true}
                         listType="picture-card"
                         fileList={fileList}
@@ -404,7 +573,6 @@ function Product() {
                         onChange={handleChange}
                         beforeUpload={file => {
                             getBase64(file)
-                            // Prevent upload
                             return false;
                         }}
                     >
@@ -421,7 +589,7 @@ function Product() {
                     </Modal>
 
                 </Form>
-               
+                
             </Modal>
             <Modal
                 title="Selectionner l'image principale"
@@ -429,27 +597,28 @@ function Product() {
                 width={1000}
                 onCancel={handleCancel_ProductImageModal}
                 footer={[
-                    
+
                 ]}
             >
                 <div className="">
                     <Row className="my-4 inline-block flex flex-row flex-wrap">
                         {ProductImages.map((productimage) => (
-                        <Col className='w-1/5 mx-5 my-1'>
-                                <Popconfirm title="Sure to select?" onConfirm={() => handleConfirm_ProductImageModal(productimage.id)}>
-                                    <Card bodyStyle={{ padding: '5px' }}  hoverable className='hover:bg-gray-50' bordered={false}>
-                                        <img style={{ height: '100%', width: '100%' }}
-                                        className=''
-                                        alt="example"
-                                        src={productimage.image}
-                                    />
-                            </Card>
-                                </Popconfirm>                                
-                        </Col>))}
+                            <Col className='w-1/5 mx-5 my-1'>
+                                <Popconfirm title="Sure to select?" className="flex justify-center" onConfirm={() => handleConfirm_ProductImageModal(productimage.uid)}>
+                                    <Card bodyStyle={{ padding: '5px' }} hoverable className='hover:bg-gray-50' bordered={false}>
+                                        <img className="w-40 h-40"
+                                            
+                                            alt="example"
+                                            src={productimage.url}
+                                        />
+                                    </Card>
+                                </Popconfirm>
+                            </Col>))}
                     </Row>
                 </div>
             </Modal>
-        </>
-    )
+        </div>
+    );
+
 }
-export default Product;
+export default ProductTab;

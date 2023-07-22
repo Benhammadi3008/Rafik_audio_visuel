@@ -59,6 +59,7 @@ function Category() {
                             console.log(data);
                             setOpen(false);
                             setConfirmLoading(false);
+                            form.resetFields();
                             api['success']({
                                 message: 'Catégorie',
                                 description:
@@ -178,6 +179,11 @@ function Category() {
                         fileList={fileList}
                         onPreview={handlePreview}
                         onChange={handleChange}
+                        beforeUpload={file => {
+                            getBase64(file)
+                            // Prevent upload
+                            return false;
+                        }}
 
                     >
                         {fileList.length >= 1 ? null : uploadButton}

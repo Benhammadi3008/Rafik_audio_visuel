@@ -30,7 +30,7 @@ function ArtCard({nom , brand ,sousCategori , image , description , notation , p
     return(
         <div className="flex w-full bg-white  rounded-lg cursor-pointer opacity-50 hover:opacity-100  h-full overflow-auto font-semibold max-[600px]:hover:font-medium  hover:font-black text-slate-600 ">
             <Col classname="h-full w-1/4 justify-center ml-auto mr-auto  " >
-                <img src={image} alt={nom} className=" w-48 h-48 pt-2 pb-2 pl-2 X"  />
+                <img src={image} alt={nom} className=" w-48 h-48 pt-2 pb-2 pl-2 X rounded-2xl"  />
             </Col>
             <Col className="h-full w-1/2 justify-center ml-auto mr-auto   pl-3 max-h-40">
                <Row className="pt-5"> <p>{brand} {nom} -{sousCategori} </p> </Row>

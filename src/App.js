@@ -43,7 +43,7 @@ function Layout(getChildData,onClose,openChild,categories){
         height={180}
         bodyStyle={{paddingTop:"0px" , paddingBottom:"0px" , paddingLeft:"0px" , paddingRight:"0px"}}
        >
-        <div className="h-full" >
+        <div className="h-full font-sans" >
                 <Row className=" flex flex-col  justify-center h-full " >
                   {categories.map((Categorie) => (
                   <Col className="bg-white mx-auto rounded-lg max-[600px]:ml-0  text-slate-400  hover:text-slate-700 max-[600px]:bg-inherit  h-full cursor-pointer opacity-60 hover:opacity-90 w-1/6  max-[600px]:w-1/2 ">
@@ -68,7 +68,7 @@ function ProtectedRoutes(){
     return <Navigate to="/login" />;
   }
   return (
-    <div className="flex flex-row max-w-full inline-block">
+    <div className="flex flex-row max-w-full ">
       <div className="min-h-screen">
       <SideBar />
       </div>

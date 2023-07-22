@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, Form, Input, Upload, Popconfirm, Table, notification, Select } from 'antd';
+import { Button, Modal, Form, Input, Upload, Popconfirm, Table, notification, Select, Checkbox } from 'antd';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import authHeader from '../../services/authHeader'
 
 import axios from 'axios'
 
-function UnderCatgoryTab() {
+function PublicityTab() {
     const { TextArea } = Input;
     const { Option } = Select;
     const layout = {
@@ -19,28 +19,27 @@ function UnderCatgoryTab() {
     const [ChangedImage, setChangedImage] = useState(false);
     const [dataSource, setDataSource] = useState([]);
     const data = [];
-    const [categories, setCategories] = useState([]);
-    
+    const [products, setProducts] = useState([]);
     function getEvents() {
-        axios.get(process.env.REACT_APP_API_BASE_URL + `undercategory`)
+        axios.get(process.env.REACT_APP_API_BASE_URL + `publicities`)
             .then(res => {
-                const tmp = res.data.UnderCategories;
-                tmp.forEach((undercategory) => {
+                const tmp = res.data.message;
+                tmp.forEach((publicity) => {
                     data.push({
-                        key: undercategory.id,
-                        name: undercategory.name,
-                        category: undercategory.category.name,
-                        description: undercategory.description
+                        key: publicity.id,
+                        text: publicity.text,
+                        product: publicity.product.name,
+                        is_actif: (publicity.is_actif === '1') ? 'Oui' : 'Non',
                     })
                 })
                 setDataSource(data)
 
             })
 
-        axios.get(process.env.REACT_APP_API_BASE_URL + 'category')
+        axios.get(process.env.REACT_APP_API_BASE_URL + 'product')
             .then(res => {
                 const tmp = res.data;
-                setCategories(tmp.Categories)
+                setProducts(tmp.Products)
             })
     }
     useEffect(() => {
@@ -51,15 +50,15 @@ function UnderCatgoryTab() {
     const handleDelete = (key) => {
 
         axios
-            .delete(process.env.REACT_APP_API_BASE_URL + 'undercategory/' + key,
+            .delete(process.env.REACT_APP_API_BASE_URL + 'publicity/' + key,
                 authHeader())
             .then(({ }) => {
                 const newData = dataSource.filter((item) => item.key !== key);
                 setDataSource(newData);
                 api['success']({
-                    message: 'Sous catégorie',
+                    message: 'Publicity',
                     description:
-                        'Sous catégorie a été supprimée avec succès.',
+                        'Publicity a été supprimée avec succès.',
                 });
             })
             .catch(() => {
@@ -68,26 +67,25 @@ function UnderCatgoryTab() {
 
 
     };
-    const [UnderCategoryId, setUnderCategoryId] = useState('');
+    const [PublicityId, setPublicityId] = useState('');
 
     const handleModify = (key) => {
-        setUnderCategoryId(key);
-        axios.get(process.env.REACT_APP_API_BASE_URL + 'undercategory/' + key,
+        setPublicityId(key);
+        axios.get(process.env.REACT_APP_API_BASE_URL + 'publicity/' + key,
             authHeader()
         )
             .then(({ data }) => {
                 setOpen(true);
-                form.setFieldValue('name', data.undercategory.name)
-                form.setFieldValue('description', data.undercategory.description)
-                form.setFieldValue('category_id', data.undercategory.category_id)
+                form.setFieldValue('text', data.message.text)
+                form.setFieldValue('is_actif', (data.message.is_actif=== '1'))
+                form.setFieldValue('product_id', data.message.product_id)
 
-                console.log(data);
                 setFileList([
                     {
                         uid: '-1',
                         name: 'image.png',
                         status: 'done',
-                        url: data.undercategory.image,
+                        url: data.message.image,
                     }])
             })
             .catch((error) => {
@@ -98,18 +96,17 @@ function UnderCatgoryTab() {
 
     const columns = [
         {
-            title: 'Sous catégorie',
-            dataIndex: 'name',
-            width: 170
+            title: 'Publicity',
+            dataIndex: 'text',
         },
         {
-            title: 'Catégorie',
-            dataIndex: 'category',
-            width: 170
+            title: 'Produit',
+            dataIndex: 'product',
         },
         {
-            title: 'Description',
-            dataIndex: 'description',
+            title: 'Affichage',
+            dataIndex: 'is_actif',
+            width: 100
         },
         {
             title: 'Action',
@@ -147,36 +144,38 @@ function UnderCatgoryTab() {
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [api, contextHolder] = notification.useNotification();
 
-    const handleCancel_CategoryModal = () => {
+
+    const handleCancel_PublicityModal = () => {
         setOpen(false);
     };
 
     const [form] = Form.useForm();
 
-    const handleOk_UnderCategoryModal = () => {
+    const handleOk_PublicityModal = () => {
         setConfirmLoading(true);
         form
             .validateFields()
             .then((values) => {
 
                 let data = new FormData();
-                data.append('name', values.name);
-                data.append('category_id', values.category_id);
-                data.append('description', values.description);
+                
+                data.append('text', values.text);
+                data.append('product_id', values.product_id);
+                values.is_actif ? data.append('is_actif', '1') : data.append('is_actif', '0');
+
                 data.append("_method", "PATCH");
 
-                axios.post(process.env.REACT_APP_API_BASE_URL + 'undercategory/' + UnderCategoryId,
+                axios.post(process.env.REACT_APP_API_BASE_URL + 'publicity/' + PublicityId,
                     data
                     , authHeader()
                 )
-                    .then(({ }) => {
+                    .then(({}) => {
                         setConfirmLoading(false);
                         setOpen(false);
                         dataSource.forEach(function (obj) {
-                            if (obj.key === UnderCategoryId) {
-                                obj.name = values.name;
-                               
-                                obj.description = values.description;
+                            if (obj.key === PublicityId) {
+                                obj.text = values.text;
+                                obj.is_actif = (values.is_actif ? 'Oui' : 'Non')
                             }
                         });
 
@@ -193,7 +192,7 @@ function UnderCatgoryTab() {
             let dataImage = new FormData();
             dataImage.append("image", fileList[0].originFileObj);
 
-            axios.post(process.env.REACT_APP_API_BASE_URL + 'imageofundercategory/' + UnderCategoryId,
+            axios.post(process.env.REACT_APP_API_BASE_URL + 'imageofpublicity/' + PublicityId,
                 dataImage
                 , authHeader()
             )
@@ -206,13 +205,13 @@ function UnderCatgoryTab() {
                 });
         }
         api['success']({
-            message: 'Sous catégorie',
+            message: 'Publicite',
             description:
-                'Sous catégorie a été modifié avec succès.',
+                'Publicite a été modifié avec succès.',
         });
         setConfirmLoading(false);
     };
-    const onFinish_UnderCategoryModal = () => {
+    const onFinish_PublicityModal = () => {
     };
     const handleCancelUpload = () => setPreviewOpen(false);
     const handlePreview = async (file) => {
@@ -227,7 +226,7 @@ function UnderCatgoryTab() {
         setFileList(newFileList)
         setChangedImage(true)
     };
-   
+
     const uploadButton = (
         <div>
             <PlusOutlined />
@@ -255,16 +254,16 @@ function UnderCatgoryTab() {
 
             />
             <Modal
-                title="Ajouter une categorie"
+                title="Ajouter une publicite"
                 open={open}
-                onOk={handleOk_UnderCategoryModal}
+                onOk={handleOk_PublicityModal}
                 confirmLoading={confirmLoading}
-                onCancel={handleCancel_CategoryModal}
+                onCancel={handleCancel_PublicityModal}
                 footer={[
-                    <Button key="back" onClick={handleCancel_CategoryModal}>
+                    <Button key="back" onClick={handleCancel_PublicityModal}>
                         Return
                     </Button>,
-                    <Button key="submit" className="bg-blue-300" type="primary" loading={confirmLoading} onClick={handleOk_UnderCategoryModal}>
+                    <Button key="submit" className="bg-blue-300" type="primary" loading={confirmLoading} onClick={handleOk_PublicityModal}>
                         Submit
                     </Button>,
                 ]}
@@ -274,27 +273,14 @@ function UnderCatgoryTab() {
                     {...layout}
                     form={form}
                     name="control-hooks"
-                    onFinish={onFinish_UnderCategoryModal}
+                    onFinish={onFinish_PublicityModal}
                     style={{
                         maxWidth: 600,
                     }}
-
                 >
                     <Form.Item
-                        name="name"
-                        label="Nom"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Veuillez saisir le nom',
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="category_id"
-                        label="Catégorie"
+                        name="product_id"
+                        label="Produit"
                         rules={[
                             {
                                 required: true,
@@ -306,13 +292,13 @@ function UnderCatgoryTab() {
                             placeholder="Choisissez une catégorie"
                             allowClear
                         >
-                            {categories.map((categorie) => <Option value={categorie.id} >{categorie.name}</Option>)}
+                            {products.map((product) => <Option value={product.id} > {product.name} <div className="text-xs text-blue-300">{product.under_category.name}</div></Option>)}
 
                         </Select>
                     </Form.Item>
                     <Form.Item
-                        label="Description"
-                        name="description"
+                        label="Text"
+                        name="text"
                         rules={[
                             {
                                 required: true,
@@ -321,6 +307,17 @@ function UnderCatgoryTab() {
                         ]}>
                         <TextArea rows={4} />
                     </Form.Item>
+                    <Form.Item
+                        name="is_actif"
+                        valuePropName="checked"
+                        wrapperCol={{
+                            offset: 7,
+                            span: 16,
+                        }}
+                    >
+                        <Checkbox>Afficher la publication</Checkbox>
+                    </Form.Item>
+
 
 
                     <Upload
@@ -342,12 +339,11 @@ function UnderCatgoryTab() {
                             src={previewImage}
                         />
                     </Modal>
-
                 </Form>
                 <Form
 
                     name="dynamic_form_nest_item"
-                    onFinish={onFinish_UnderCategoryModal}
+                    onFinish={onFinish_PublicityModal}
                     style={{
                         maxWidth: 600,
                     }}
@@ -361,4 +357,4 @@ function UnderCatgoryTab() {
     );
 
 }
-export default UnderCatgoryTab;
+export default PublicityTab;
