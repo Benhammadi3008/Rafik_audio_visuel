@@ -12,7 +12,8 @@ function FooterOne (){
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           opacity: "100%" ,
-        }}>
+        }}
+        className=" bottom-0 left-0 w-full" >
         <Row  >
             <Col className="h-full w-1/3 pt-4  max-[600px]:mt-2">
                 <Row className="w-full flex space-x-5   ml-5  max-[600px]:ml-0 max-[600px]:flex max-[600px]:space-x-0 pb-3 " >

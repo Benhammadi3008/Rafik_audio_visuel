@@ -57,7 +57,7 @@ function SousCategorie(){
                 }}
          >
             
-            <div className="font-bold text-slate-100 justify-center pt-10 pb-5 text-center " > Catégorie : {categorie.name}</div>
+            <div className="font-bold text-slate-100 justify-center pt-10 pb-5 text-center  " > Catégorie : {categorie.name}</div>
             <div className=" w-4/5 max-[600px]:w-full  pt-5  pb-10  ml-auto max-[600px]:ml-0 mr-auto flex flex-wrap justify-center rounded-lg ">
             {undercategories.map((sousCategorie) => (
                     <div className="w-1/5  max-[600px]:w-1/2 pb-5 ml-0 pr-2 pl-2 max-h-72  "> 
@@ -68,7 +68,7 @@ function SousCategorie(){
                         </div>
             ))}  
             </div> 
-            <FooterOne/>
+            <FooterOne />
              <ScrollToTopButton/>
         </div>
     )

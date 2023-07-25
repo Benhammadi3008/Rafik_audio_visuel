@@ -64,6 +64,7 @@ function Article (){
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
                 opacity: "100%",
+                height:"100%"
             }} id="preloader">
             <div id="loader"></div>
         </div>
@@ -77,7 +78,9 @@ function Article (){
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             opacity: "100%" ,
-            }}>
+            
+            }}
+            >
      {/*-------------------------- Stepper ------------------------------ */}
             <Row className="  text-justify pt-6 pl-16 font-bold  text-blue-900  opacity-80 hover:opacity-100">
                 <p className="underline pr-3">
@@ -103,7 +106,7 @@ function Article (){
                 
             </Row>
             <p className="font-bold text-slate-100 justify-center pt-10 pb-5 text-center "> Sous-categorie : {Souscategory.name} </p>
-            <div className="w-4/5  max-[600px]:w-full justify-center mr-auto ml-auto pt-3 pb-4">
+            <div className="w-4/5  max-[600px]:w-full justify-center mr-auto ml-auto pt-3 pb-4 ">
             {  products.map((product) => (
                 <div className="pt-2 pb-3" >
                     <Link to={`/product/${product.id}`}>
@@ -123,8 +126,10 @@ function Article (){
                 </div>
         ))}   
             </div>
-            <FooterOne/>
             <ScrollToTopButton/>
+            <FooterOne   />
+
+            
         </div>
     )
 }

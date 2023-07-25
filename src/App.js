@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Acceuil from "./pages/Accueil";
 import SousCategorie from "./pages/SousCategorie";
 import Article from "./pages/Atricle";
+import FiltredProducts from "./pages/FiltredProducts";
 import MainDash from "./pages/Admin/MainDash";
 import Brand from "./pages/Admin/Brand";
 import Category from "./pages/Admin/Category";
@@ -138,6 +139,8 @@ function App() {
             <Route path="/" element={ <Acceuil/>} />
             <Route path="/Catégories/:categoryKey" element={ <SousCategorie/>} />
             <Route path="/Catégories/:categoryKey/:SouscategoryKey" element={ <Article/>} />
+            <Route path="/Products/search/:search?" element={<FiltredProducts />} />
+            <Route path="/Products/filter/:filter?" element={<FiltredProducts />} />
             <Route path="/Product/:ProductId" element={ <Product/>} />
           </Route>
 

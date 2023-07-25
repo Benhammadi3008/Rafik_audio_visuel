@@ -41,28 +41,29 @@ function Acceuil () {
 
 
   // END API
-
-  function resetTimeout() {
+  const resetTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-  }
-
-  React.useEffect(() => {
+  };
+  useEffect(() => {
     resetTimeout();
-    timeoutRef.current = setTimeout(
-      () => 
-        setIndex((prevIndex) =>
-          prevIndex === items.length - 1   ? 0 : prevIndex + 1 ,
-        ),
-        
-      delay , 
-    );
+
+    // Si vous avez un seul slide, n'activez pas le défilement automatique
+    if (items.length === 1) {
+      return;
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
+    }, delay);
 
     return () => {
       resetTimeout();
     };
-  }, [index]);
+  }, [index, items]);
+
+ 
 
   if (IsLoading) {
     return <div style=
@@ -107,21 +108,21 @@ function Acceuil () {
                           className="slide "
                           key={index}
                           style={{ backgroundImage : `url(${item.image})` ,
-                                height: "400px",
-                                width: "100%",
-                                display: "inline-block",
-                                opacity :"90%", 
-                                borderRadius :"10px",
-                                backgroundSize: 'cover',
-                                backgroundRepeat: 'no-repeat',
-                                backgroundPosition: 'center',
-            
-                                  }}>
-                          <p className="decoration-solid w-1/3 text-center font-bold text-2xl italic  text-slate-100 relative top-3/4 left-7 cursor-pointer"> {item.text} </p>
-                      
+                          height: "400px",
+                          width: "100%",
+                          display: "inline-block",
+                          opacity :"90%", 
+                          borderRadius :"10px",
+                          backgroundSize: 'cover',
+                          backgroundRepeat: 'no-repeat',
+                          backgroundPosition: 'center',
                           
+                        }}>
+                         
+                          <p className="decoration-solid w-1/3  h-1/3  text-center font-bold text-2xl italic  text-slate-100 relative top-3/4 left-7 cursor-pointer underline"> {item.text} </p>
+                         
                         </div>
-                        </Link>
+                      </Link>   
                       ))}
                     </div>
                       <div className="slideshowDots " 

@@ -4,16 +4,17 @@ import { Col, Row  , Menu  , theme } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import FilterSideBare from './FilterSideBare.js'
-
+import { Link, useNavigate } from 'react-router-dom';
 import navBack from "../images/Background.jpg"
-import { Link } from 'react-router-dom';
 
 import axios from 'axios'
 
 
 
-function FirstNav(props) {
+function FirstNav(props  ) {
+  const navigate = useNavigate();
   
+
   const [items, setItems] = useState([]);
   function getEvents() {
     axios.get(process.env.REACT_APP_API_BASE_URL + `category`)
@@ -30,7 +31,9 @@ function FirstNav(props) {
   const { Search } = Input;
 
     // recuperer le texte depuis le searchBar
-    const onSearch = (value) => console.log(value);
+    const onSearch = (value) => {
+      navigate('/Products/search/'+value, { replace: true });
+    }
     
   
 
@@ -48,6 +51,7 @@ function FirstNav(props) {
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
       setOpen(!open);
+      console.log(open)
     return open
   };
     return(
@@ -72,7 +76,7 @@ function FirstNav(props) {
         </Col>
     </Row>
     <Row   className=" w-full justify-center   bg-slate-400/20 pb-2 pt-5 flex space-x-9 max-[600px]:justify-between max-[600px]:space-x-0 "  >
-        <Col className="bg-slate-100 rounded-lg  text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold cursor-pointer "> Menu</Col>
+        <Col onClick={showDrawer} className="bg-slate-100 rounded-lg  text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold cursor-pointer "> Menu</Col>
       
         <Col  className="bg-slate-100   rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold" > 
             

@@ -125,6 +125,7 @@ function Product (){
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
                 opacity: "100%",
+                height:"screen"
             }} id="preloader">
             <div id="loader"></div>
         </div>
@@ -208,7 +209,7 @@ function Product (){
                             </p>
                             </div>
                              ) : (
-                            <p className=" text-2xl rounded-lg  h-10  w-1/3   text-blue-700  border border-red-500   max-[600px]:w-1/2">
+                            <p className=" text-2xl rounded-lg  h-10  w-1/3   text-gray-600    max-[600px]:w-1/2">
                             {product.price} DA 
                             </p>                     
                            )}
@@ -218,7 +219,7 @@ function Product (){
                         <p className="font-bold overflow-y-scroll "> {product.description} </p>
                     </Row>
                     <Row className="  ">
-                        <Button type="primary" onClick={() => setOpen(true)} className="h-16 ml-auto mr-auto border-none bg-gradient-to-r from-red-600 to-purple-600 opacity-80 hover:opacity-100 font-bold text-xl  w-3/6  rounded-lg  " >
+                        <Button type="primary" onClick={() => setOpen(true)} className="h-16 ml-auto mr-auto border-none bg-gradient-to-r from-red-600 to-purple-600 opacity-80 hover:opacity-100 font-bold text-xl  w-3/6  rounded-lg max-[600px]:mt-3 " >
 
                             Commander
                         </Button>
@@ -368,7 +369,7 @@ function Product (){
                 </Col>
                 
             </Row>
-            <Row className="block ml-6 mb-11">
+            <Row className="block ml-6 mb-11 ">
                 <p className="font-black text-xl underline decoration-black  mb-8 "> Plus d'informations  :   </p>
                 {product.features.map((features) => (        
                 <div className="flex flex-row ">
