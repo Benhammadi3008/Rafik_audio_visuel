@@ -7,11 +7,11 @@ const CatCard = ({image , titre , description}) => (
     <Row className="  justify-center "> 
       <img src={image} alt={titre} />
     </Row>
-    <Row className="  justify-center text-center" >
-      <p>  {titre} </p>  
+    <Row className="  justify-center text-center " >
+      <p className="">  {titre} </p>  
     </Row>
-    <Row className="pb-3 text-center  justify-center  ">
-      <p className=" text-slate-400 " >  {description} </p>  
+    <Row className="pb-3 text-center  justify-center   ">
+      <p className=" text-slate-400" >  {description} </p>  
     </Row>
   </Col>
 );

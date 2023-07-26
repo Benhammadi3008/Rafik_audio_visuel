@@ -8,6 +8,8 @@ import ArtCard from "../component/ArtCard";
 
 
 import axios from 'axios'
+import FooterOne from "../component/FooterOne";
+import ScrollToTopButton from "../component/ScrolToTopButton";
 
 function FiltredProducts() {
     const [IsLoading, setIsLoading] = useState(true);
@@ -64,12 +66,12 @@ function FiltredProducts() {
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
                 opacity: "100%",
-            }} id="preloader">
+            }} id="preloader" > 
             <div id="loader"></div>
         </div>
     }
     return(
-        <div
+        <div  className="block h-full w-full "
             style=
             {{
                 backgroundImage: `url(${backGround})`,
@@ -77,12 +79,13 @@ function FiltredProducts() {
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
                 opacity: "100%",
-            }}>
-            {products.length > 0 &&
+            }}  >
                 
-            <div className="w-4/5  max-[600px]:w-full justify-center mr-auto ml-auto pt-3 pb-4">
+                <p className="font-bold text-xl text-slate-100 justify-center pt-14 pb-5 text-center  "> Resultats :  </p>
+            {products.length > 0 &&
+            <div className=" w-4/5 max-[600px]:w-full  pt-5  pb-10  ml-auto max-[600px]:ml-0 mr-auto flex flex-wrap justify-center rounded-lg" >
             {products.map((product) => (
-                <div className="pt-2 pb-3" >
+                <div className="pt-2 pb-3 w-full" >
                     <Link to={`/product/${product.id}`}>
                         <ArtCard
                             image={GetProductImage(product.products_images_primary)}
@@ -106,6 +109,8 @@ function FiltredProducts() {
             </div>
                 
             }
+            <ScrollToTopButton/>
+            <FooterOne/>
         </div>
     )
 }

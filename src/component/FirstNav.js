@@ -6,6 +6,7 @@ import { Input } from 'antd';
 import FilterSideBare from './FilterSideBare.js'
 import { Link, useNavigate } from 'react-router-dom';
 import navBack from "../images/Background.jpg"
+import { FaBars  } from 'react-icons/fa'
 
 import axios from 'axios'
 
@@ -13,7 +14,10 @@ import axios from 'axios'
 
 function FirstNav(props  ) {
   const navigate = useNavigate();
-  
+ 
+  const scrollToBottom = () => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  };
 
   const [items, setItems] = useState([]);
   function getEvents() {
@@ -51,7 +55,6 @@ function FirstNav(props  ) {
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
       setOpen(!open);
-      console.log(open)
     return open
   };
     return(
@@ -65,18 +68,18 @@ function FirstNav(props  ) {
         width: '100%',
         height : '17%'
        }}  
-       className="h-auto w-full"  >
+       className="h-full w-full"  >
        
         
-        <Row className="pb-2 w-full flex justify-between " >   
-        <Col className="mt-2 "><FilterSideBare/> </Col>        
-        <Col  className=" mt-2" > <Link to={`/`}> <img src={logo} alt="Logo"  className="w-20  " /> </Link> </Col>
-        <Col     className="pt-2 w-2/3 " >
+        <Row className="pb-2 w-full flex justify-between  " >   
+        <Col className="mt-2  "><FilterSideBare titre= {<FaBars className='w-7 h-7' />}   /> </Col>        
+        <Col  className=" mt-2 max-[600px]:mt-4 max-[600px]:text-center" > <Link to={`/`}> <img src={logo} alt="Logo"  className="w-20 max-[600px]:w-14 " /> </Link> </Col>
+        <Col     className="pt-2 w-2/3  max-[600px]:mt-1 max-[600px]:text-center" >
         <Search placeholder="Rechercher un article ..." onSearch={onSearch} style={{ width: "50%" }}   />
         </Col>
     </Row>
     <Row   className=" w-full justify-center   bg-slate-400/20 pb-2 pt-5 flex space-x-9 max-[600px]:justify-between max-[600px]:space-x-0 "  >
-        <Col onClick={showDrawer} className="bg-slate-100 rounded-lg  text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold cursor-pointer "> Menu</Col>
+        <Col onClick={showDrawer} className="bg-slate-100 rounded-lg  text-neutral-600 w-auto pl-3 pr-3  font-semibold cursor-pointer "> <FilterSideBare titre= "Menu"   /> </Col>
       
         <Col  className="bg-slate-100   rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold" > 
             
@@ -87,8 +90,8 @@ function FirstNav(props  ) {
     
     
         </Col>
-        <Col  className="bg-slate-100  rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold"> Shop </Col>
-        <Col  className="bg-slate-100   rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold"> Contact Us  </Col>
+        <Col className="bg-slate-100  rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold cursor-pointer"> Shop </Col>
+        <Col onClick={scrollToBottom} className="bg-slate-100   rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 cursor-pointer font-semibold hover:text-sky-400"> Contact Us  </Col>
     </Row>
     
     {/* <div className="h-48 bg-white inline-block rel z-10 " ></div> */}

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios'
 
-const FilterSideBare = () => {
+const FilterSideBare = ({titre}) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { Option } = Select;
@@ -81,14 +81,15 @@ const FilterSideBare = () => {
     <>
       <Space>
         
-        <Button type="primary" onClick={showDrawer} className='bg-inherit  w-auto h-auto hover:bg-red-600'>
-          <FaBars className='w-7 h-7' />
+        <Button type="default" onClick={showDrawer} className=' mt-1 font-semibold hover:text-inherit border-none text-neutral-600 w-auto h-auto'>
+          {titre}
         </Button>
       </Space>
       <Drawer
+     
         title="Filtre Par :"
         placement={'left'}
-        closable={false}
+        closable={true}
         onClose={onClose}
         open={open}
         style={{backgroundColor:"rgb(241 245 249)" , color:"rgb(100 116 139)" }}

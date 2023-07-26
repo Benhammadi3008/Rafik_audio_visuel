@@ -150,15 +150,15 @@ function Acceuil () {
         </div>
         < >
         <Row className="w-4/5 mt-2 mb-2 ml-auto mr-auto  justify-between text-center"  >
-          <Col span={8} className="text-xl font-bold underline-offset-2  text-neutral-950"><p>Produit</p></Col>
+          <Col span={8} className="text-xl font-bold underline-offset-2  text-neutral-950"><p>Categories</p></Col>
           <Col span={8}  className="text-xl font-bold underline-offset-2  text-neutral-950"><p>All</p></Col>
         </Row>
               <div className=" pb-6">
                 <Row className=" justify-center w-4/5 mt-6  ml-auto mr-auto flex flex-wrap ">
                   {categories.map((Categorie) => (
-                  <Col className="bg-white rounded-lg  ml-3 max-[600px]:ml-0 max-[600px]:pl-3 mb-3 max-[600px]:bg-inherit h-full  cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2 ">
+                  <Col className="bg-white text-center rounded-lg  ml-3 max-[600px]:ml-0 max-[600px]:pl-3 mb-3 max-[600px]:bg-inherit h-2/3  cursor-pointer opacity-50 hover:opacity-100 w-1/5  max-[600px]:w-1/2 ">
                     <Link to={`/Catégories/` + Categorie.id}>
-                      <img className="rounded-lg h-full" src={Categorie.image} alt={Categorie.name} />
+                      <img className=" mr-auto ml-auto rounded-lg h-48 " src={Categorie.image} alt={Categorie.name} />
                       <p className="font-extrabold text-slate-400 text-center absolute inset-x-0 bottom-4 ">{Categorie.name}</p>
                     </Link>
                   </Col>

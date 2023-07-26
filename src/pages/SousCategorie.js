@@ -46,7 +46,7 @@ function SousCategorie(){
         </div>
     }
     return(
-        <div class="block h-full w-full " 
+        <div className="block h-full w-full " 
             style=
                 {{
                 backgroundImage: `url(${backGround})`,
@@ -63,7 +63,10 @@ function SousCategorie(){
                     <div className="w-1/5  max-[600px]:w-1/2 pb-5 ml-0 pr-2 pl-2 max-h-72  "> 
                               <Link to={`/Catégories/${categorie.id}/${sousCategorie.id}`}>
 
-                    <CatCard image={sousCategorie.image} titre={sousCategorie.name} description={sousCategorie.description} />
+                    <CatCard 
+                    image={sousCategorie.image}
+                    titre={sousCategorie.name}
+                    description={sousCategorie.description} />
                     </Link>
                         </div>
             ))}  
