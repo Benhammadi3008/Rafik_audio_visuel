@@ -30,7 +30,7 @@ function Acceuil () {
     axios.get(process.env.REACT_APP_API_BASE_URL +'publicity')
       .then(res => {
         const tmp = res.data;
-        console.log(tmp.message);
+
         setItems(tmp.message)
         setIsLoading(false)
       })

@@ -26,7 +26,7 @@ function Login (){
                         localStorage.setItem('authorization', JSON.stringify(data.authorization));
                         localStorage.setItem('User', JSON.stringify(data.user));
                         localStorage.setItem('Authenticated', true);
-                        navigate('/dashboard/Main', { replace: true });
+                        window.location.reload(false);
                     })
                     .catch((error) => {
                         console.log(error.response.data);

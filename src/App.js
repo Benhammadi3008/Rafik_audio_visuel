@@ -85,7 +85,7 @@ function LoginRoute() {
   const Authenticated = localStorage.getItem('Authenticated');
 
   if (Authenticated === 'true') {
-    return <Navigate to="/" />;
+    return <Navigate to="/dashboard/Main" />;
   }
   return (
     <div>

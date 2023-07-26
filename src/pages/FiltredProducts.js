@@ -3,9 +3,8 @@ import { Link, useParams, useLocation } from "react-router-dom";
 
 import empty from "../images/empty.png"
 import backGround from "../images/Background2.jpg"
-import { Empty } from 'antd';
+import { Empty, Pagination } from 'antd';
 import ArtCard from "../component/ArtCard";
-
 
 import axios from 'axios'
 import FooterOne from "../component/FooterOne";
@@ -16,6 +15,8 @@ function FiltredProducts() {
     const { search } = useParams();
     const { filter } = useParams();
     const [products, setProduct] = useState([]);
+    const [totalPages, settotalPages] = useState([]);
+    const [path, setPath] = useState([]);
     const location = useLocation();
     function getEvents() {
         let s = (typeof search === 'undefined' ? "" : search);
@@ -25,20 +26,33 @@ function FiltredProducts() {
         if (path[2] === "search"){
             axios.get(process.env.REACT_APP_API_BASE_URL + 'productssearch/' + s)
                 .then(res => {
-                    const tmp = res.data.Products;
+                    const tmp = res.data.Products.data;
                     setProduct(tmp)
+                    settotalPages(res.data.Products.total)
+                    setPath(res.data.Products.path)
                     setIsLoading(false)
                 })
         } else if (path[2] === "filter"){
             axios.get(process.env.REACT_APP_API_BASE_URL + 'productsside/' + f)
                 .then(res => {
-                    const tmp = res.data.Products;
+                    const tmp = res.data.Products.data;
                     setProduct(tmp)
+                    settotalPages(res.data.Products.total)
+                    setPath(res.data.Products.path)
                     setIsLoading(false)
 
                 })
         }
     }
+    const onChange = (pageNumber) => {
+        axios.get(path+"?page="+pageNumber)
+            .then(res => {
+                const tmp = res.data.Products.data;
+                setProduct(tmp)
+                setIsLoading(false)
+
+            })
+    };
     useEffect(() => {
         getEvents();
     }, [useLocation().pathname])
@@ -110,6 +124,7 @@ function FiltredProducts() {
                 
             }
             <ScrollToTopButton/>
+            <Pagination hideOnSinglePage className="my-4" showQuickJumper defaultCurrent={1} total={totalPages} onChange={onChange} />
             <FooterOne/>
         </div>
     )
