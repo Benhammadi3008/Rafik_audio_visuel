@@ -16,7 +16,7 @@ function FiltredProducts() {
     const { filter } = useParams();
     const [products, setProduct] = useState([]);
     const [totalPages, settotalPages] = useState([]);
-    const [path, setPath] = useState([]);
+    const [path_api, setPath] = useState([]);
     const location = useLocation();
     function getEvents() {
         let s = (typeof search === 'undefined' ? "" : search);
@@ -45,7 +45,7 @@ function FiltredProducts() {
         }
     }
     const onChange = (pageNumber) => {
-        axios.get(path+"?page="+pageNumber)
+        axios.get(path_api+"?page="+pageNumber)
             .then(res => {
                 const tmp = res.data.Products.data;
                 setProduct(tmp)
@@ -124,7 +124,7 @@ function FiltredProducts() {
                 
             }
             <ScrollToTopButton/>
-            <Pagination hideOnSinglePage className="my-4" showQuickJumper defaultCurrent={1} total={totalPages} onChange={onChange} />
+            <Pagination hideOnSinglePage className="my-4" defaultCurrent={1} total={totalPages} onChange={onChange} />
             <FooterOne/>
         </div>
     )

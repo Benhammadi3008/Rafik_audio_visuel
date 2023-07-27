@@ -3,12 +3,11 @@ import { Link, useParams, useLocation } from "react-router-dom";
 
 import empty from "../images/empty.png"
 import backGround from"../images/Background2.jpg"
-import FirstNav from "../component/FirstNav";
 import FooterOne from "../component/FooterOne";
 import ScrollToTopButton from "../component/ScrolToTopButton";
 import nikon from "../images/Nikon.png"
 import ArtCard from "../component/ArtCard";
-import { Row } from "antd";
+import { Row, Pagination } from "antd";
 
 import axios from 'axios'
 
@@ -17,6 +16,8 @@ function Article (){
     const { SouscategoryKey } = useParams();
     const { categoryKey } = useParams();
     const [products, setProduct] = useState([]);
+    const [totalPages, settotalPages] = useState([]);
+    const [path_api, setPath] = useState([]);
     const [Souscategory, setSouscategory] = useState([]);
     const [category, setcategory] = useState([]);
      function GetNotation(val){
@@ -37,10 +38,12 @@ function Article (){
     }
     
     function getEvents() {
-        axios.get(process.env.REACT_APP_API_BASE_URL +'productsofundercategory/' + SouscategoryKey)
+        axios.get(process.env.REACT_APP_API_BASE_URL +'products/' + SouscategoryKey)
             .then(res => {
-                const tmp = res.data.Products;
+                const tmp = res.data.Products.data;
                 setProduct(tmp)
+                settotalPages(res.data.Products.total)
+                setPath(res.data.Products.path)
                 setIsLoading(false)
             })
         axios.get(process.env.REACT_APP_API_BASE_URL +'undercategory/' + SouscategoryKey)
@@ -55,6 +58,15 @@ function Article (){
         getEvents();
     }, [useLocation().pathname])
 
+    const onChange = (pageNumber) => {
+        axios.get(path_api + "?page=" + pageNumber)
+            .then(res => {
+                const tmp = res.data.Products.data;
+                setProduct(tmp)
+                setIsLoading(false)
+
+            })
+    };
 
     if (IsLoading) {
         return <div style=
@@ -127,6 +139,7 @@ function Article (){
         ))}   
             </div>
             <ScrollToTopButton/>
+            <Pagination hideOnSinglePage className="my-4"  defaultCurrent={1} total={totalPages} onChange={onChange} />
             <FooterOne   />
 
             
