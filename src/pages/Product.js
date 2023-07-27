@@ -215,7 +215,7 @@ function Product (){
                            )}
                     </Row>
                     <Row className="block mt-5 h-2/4">
-                        <p className="font-black text-2xl text-gray-700"> Caractéristiques : </p> 
+                        <p className="font-black text-2xl text-gray-700"> Plus d'informations  :  </p> 
                         <p className="font-bold overflow-y-scroll "> {product.description} </p>
                     </Row>
                     <Row className="  ">
@@ -370,7 +370,7 @@ function Product (){
                 
             </Row>
             <Row className="block ml-6 mb-11 ">
-                <p className="font-black text-xl underline decoration-black  mb-8 "> Plus d'informations  :   </p>
+                <p className="font-black text-xl underline decoration-black  mb-8 "> Caractéristiques :  </p>
                 {product.features.map((features) => (        
                 <div className="flex flex-row ">
                     <p className="font-black text-xl ml-4"> {features.type} :  </p>

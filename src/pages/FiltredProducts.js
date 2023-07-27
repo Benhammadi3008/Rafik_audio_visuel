@@ -118,7 +118,7 @@ function FiltredProducts() {
             ))}
                 </div>}
             {products.length == 0 &&
-                <div className="w-4/5  max-[600px]:w-full justify-center mr-auto ml-auto pt-3 pb-4">
+                <div className="w-4/5 h-screen  max-[600px]:w-full justify-center mr-auto ml-auto pt-3 pb-4">
                     <Empty />
             </div>
                 
