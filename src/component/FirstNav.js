@@ -90,7 +90,7 @@ function FirstNav(props  ) {
     
     
         </Col>
-        <Col className="bg-slate-100  rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold cursor-pointer"> Shop </Col>
+            <Col onClick={() => navigate('/Products/filter/ %2F %2F %2Fdesc%2F', { replace: true })} className="bg-slate-100  rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 font-semibold cursor-pointer"> Shop </Col>
         <Col onClick={scrollToBottom} className="bg-slate-100   rounded-lg text-neutral-600 w-auto pl-3 pr-3 pt-2 pb-2 cursor-pointer font-semibold hover:text-sky-400"> Contact Us  </Col>
     </Row>
     
