@@ -19,10 +19,12 @@ function FiltredProducts() {
     const [path_api, setPath] = useState([]);
     const location = useLocation();
     function getEvents() {
+
         let s = (typeof search === 'undefined' ? "" : search);
         let f = (typeof filter === 'undefined' ? "" : filter);
-        
+       
         const path = location.pathname.split('/');
+        
         if (path[2] === "search"){
             axios.get(process.env.REACT_APP_API_BASE_URL + 'productssearch/' + s)
                 .then(res => {
@@ -32,8 +34,18 @@ function FiltredProducts() {
                     setPath(res.data.Products.path)
                     setIsLoading(false)
                 })
-        } else if (path[2] === "filter"){
-            axios.get(process.env.REACT_APP_API_BASE_URL + 'productsside/' + f)
+        } 
+        else if (path[2] === "filter"){
+            const dataToFilter = location.pathname.replaceAll('%2F', '/').split('/');
+
+            let data = new FormData();
+
+            if (dataToFilter[3] === '%20') { data.append('category', " "); } else { data.append('category', dataToFilter[3]); }
+            if (dataToFilter[4] === '%20') { data.append('undercategory', " "); } else { data.append('undercategory', dataToFilter[4]); }
+            if (dataToFilter[5] === '%20') { data.append('brand', " "); } else { data.append('brand', dataToFilter[5]); }
+            if (dataToFilter[6] === '%20') { data.append('price', " "); } else { data.append('price', dataToFilter[6]); }
+
+            axios.post(process.env.REACT_APP_API_BASE_URL + 'productsside',data)
                 .then(res => {
                     const tmp = res.data.Products.data;
                     setProduct(tmp)
@@ -56,6 +68,7 @@ function FiltredProducts() {
     useEffect(() => {
         getEvents();
     }, [useLocation().pathname])
+
     function GetNotation(val) {
 
         if (val.length === 0) {
@@ -117,7 +130,7 @@ function FiltredProducts() {
                 </div>
             ))}
                 </div>}
-            {products.length == 0 &&
+            {products.length === 0 &&
                 <div className="w-4/5 h-screen  max-[600px]:w-full justify-center mr-auto ml-auto pt-3 pb-4">
                     <Empty />
             </div>

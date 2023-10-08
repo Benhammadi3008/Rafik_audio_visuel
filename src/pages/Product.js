@@ -52,7 +52,7 @@ function Product (){
             });
     })
     .catch((info) => {
-        console.log(info);
+        
         info.errorFields.forEach(element => {
             api['error']({
                 message: "Erreur de saisie",
@@ -63,7 +63,7 @@ function Product (){
     setOpen(false)
       };
       const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+       
     };
     const [form] = Form.useForm();
 
@@ -114,7 +114,7 @@ function Product (){
 
     const OnClickPrimaryImage = (key) => {
         setPrimaryImage(key)
-        console.log(PrimaryImage);
+       
     }
 
     if (IsLoading) {
